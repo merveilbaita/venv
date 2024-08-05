@@ -1,0 +1,151 @@
+{% load static tailwind_tags %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhiliaShop</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    {% tailwind_css %}
+</head>
+<style>
+    .brand{
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+    }
+</style>
+<body>
+    <header class="bg-gray-100 text-red-400 px-2 p-4 w-full fixed z-10">
+        <nav class="flex justify-between items-center">
+            <div class="brand font-semibold text-2xl">
+                <a href="{% url 'index' %}">Philia <span class="text-white bg-red-500 rounded p-2">shop</span></a>
+            </div>
+            <div class="lg:hidden">
+                <button id="menu-button" class="text-red-400 focus:outline-none">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <ul id="menu" class="hidden lg:flex space-x-3 font-thin text-xl">
+                <li><a class="hover:bg-red-500 hover:py-2 hover:rounded hover:text-white bg-red-400 text-white px-2 py-2 rounded" href="{% url 'index' %}"><i class="fa-solid fa-house"></i></a></li>
+                <li><a class="hover:bg-red-500 hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'catalogue' %}">Catalogues</a></li>
+                {% if user.is_authenticated %}
+                <li><a href="{% url 'logout' %}"><span>Bienvenue : </span> <i class="fa-regular fa-circle-user"></i> {{ user.username }}</a></li>
+                {% else %}
+                <li><a class="hover:bg-red-500 hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'login' %}">Users</a></li>
+                {% endif %}
+                {% if user.is_admin %}
+                <li><a class="hover:bg-red-500 hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'admin_dash' %}"> <i class="fa-solid fa-user"></i> Dashboard</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+        <ul id="mobile-menu" class="lg:hidden hidden space-y-1 mt-2">
+            <li><a class="block hover:bg-red-500 hover:py-2 hover:rounded hover:text-white bg-red-400 text-white px-2 py-2 rounded" href="{% url 'index' %}"><i class="fa-solid fa-house"></i></a></li>
+            <li><a class="block hover:bg-red-500 hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'catalogue' %}">Catalogues</a></li>
+            {% if user.is_authenticated %}
+            <li><a class="block hover:bg-red-500 hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'logout' %}"><span>Bienvenue : </span> <i class="fa-regular fa-circle-user"></i> {{ user.username }}</a></li>
+            {% else %}
+            <li><a class="block hover:bg-red-500 hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'login' %}">Users</a></li>
+            {% endif %}
+            {% if user.is_admin %}
+            <li><a class="block hover:bg-red-500 hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'admin_order' %}"> <i class="fa-solid fa-truck-fast"></i> Liste des commandes</a></li>
+            {% endif %}
+        </ul>
+    </header>
+
+    <div class="h-96 w-full brand justify-center" style="background-image: url('/static/images/b.jpg')">
+        <div class="p-4">
+            <p class="mt-20 text-white text-xl">Vivez une exprerience d'achat en ligne pas comme les autres</p>
+            <div class="mt-10">
+                <a class="hover:bg-red-500 hover:py-2 text-gray-100 mt-10 hover:rounded hover:text-white hover:px-2 bg-red-400 rounded py-2 px-2" href="{% url 'catalogue' %}"> <i class="fa-solid fa-arrow-right"></i> Voir plus des produits</a>
+            </div>
+        </div>
+    </div>   
+    <div class="font-bold justify-center items-center text-red-400 text-2xl mt-5">
+        <h1 class="text-center"><span class="border-b-2">Nos meuilleurs</span> vente</h1>
+    </div>
+    <div class="flex justify-center space-x-8 flex-wrap mt-5 mb-10">
+        {% for produit in produits %}
+        <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 p-4">
+            <div class="border rounded-lg shadow-lg bg-white overflow-hidden">
+                {% if produit.image_produit %}
+                <img class="w-full h-48 object-fill" src="{{ produit.image_produit.url }}" alt="Image de {{ produit.designation }}">
+                {% endif %}
+                <div class="p-4">
+                    <h2 class="text-xl font-bold mb-2">{{ produit.designation }}</h2>
+                    <p class="text-lg font-semibold text-gray-800">{{ produit.prix }} $</p>
+                    {% if produit.disponible %}
+                    <p class="text-green-600 font-semibold">Disponible</p>
+                    {% else %}
+                    <p class="text-red-600 font-semibold">Indisponible</p>
+                    {% endif %}
+                    <div class="mt-4">
+                        {% if produit.disponible %}
+                        <a class="inline-block bg-red-500 text-white text-center py-2 px-4 rounded hover:bg-red-600 transition duration-200" href="{% url 'detail' produit.slug %}"> <i class="fa-solid fa-cart-plus"></i> Acheter</a>
+                        {% else %}
+                        <button disabled class="inline-block bg-red-500 text-white text-center py-2 px-4 rounded transition duration-200 cursor-not-allowed opacity-50"> <i class="fa-solid fa-cart-plus"></i> Acheter</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        document.getElementById('menu-button').addEventListener('click', function() {
+            var mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+
+    
+<footer class="p-10 roboto-slab bg-gray-100 text-dark">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
+        <div>
+            <h3 class="mb-4 font-bold uppercase">Infos Pratiques</h3>
+    
+            <ul>
+                <li><a href="#" class="hover:text-gray-200">Points Fidélité</a></li>
+                <li><a href="#" class="hover:text-gray-200">Guide d'Entretien</a></li>
+                <li><a href="#" class="hover:text-gray-200">Guide des Tailles</a></li>
+                <li><a href="#" class="hover:text-gray-200">Mentions Légales</a></li>
+            </ul>
+        </div>
+        <div>
+            <h3 class="mb-4 font-bold uppercase">À Propos</h3>
+            <ul>
+                <li><a href="#" class="hover:text-gray-200">SAV</a></li>
+                <li><a href="#" class="hover:text-gray-200">Service Clients</a></li>
+                <li><a href="#" class="hover:text-gray-200">Livraisons et Retours</a></li>
+                <li><a href="#" class="hover:text-gray-200">FAQ Service Après Vente</a></li>
+                <li><a href="" class="hover:text-gray-200">Info du dev</a></li>
+            </ul>
+        </div>
+        <div>
+            <h3 class="mb-4 font-bold uppercase">Newsletter</h3>
+            <p class="mb-2">Découvrez en Avant Première Nos Tendances !</p>
+            <form action="#">
+                <input type="email" class="p-2 w-full text-black" placeholder="Saisissez votre e-mail">
+                <button type="submit" class="mt-2 p-2 w-full bg-black text-white">Transmettre</button>
+            </form>
+        </div>
+    </div>
+    <div class="max-w-6xl mx-auto mt-10 flex flex-col md:flex-row justify-between items-center text-center md:text-left">
+        <div class="mb-4 md:mb-0">
+            <p>Avis de la boutique <span class="font-bold">4.7/5</span></p>
+            <a href="#" class="text-yellow-400 hover:text-yellow-500">Voir les avis</a>
+        </div>
+        <div class="flex space-x-4">
+            <a href="#" class="hover:text-gray-200"><i class="fab fa-facebook"></i> Facebook</a>
+            <a href="#" class="hover:text-gray-200"><i class="fab fa-pinterest"></i> Pinterest</a>
+            <a href="#" class="hover:text-gray-200"><i class="fab fa-instagram"></i> Instagram</a>
+            <a href="#" class="hover:text-gray-200"><i class="fab fa-youtube"></i> YouTube</a>
+            
+        </div>
+    </div>
+    <a href=""><img src="" alt="" width="150px"></a>
+</footer>
+</body>
+</html>

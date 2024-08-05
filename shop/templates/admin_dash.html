@@ -1,0 +1,75 @@
+{% load static tailwind_tags %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Order List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    {% tailwind_css %}
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .content {
+            flex: 1;
+            margin-left: 16rem; /* largeur du sidebar */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex flex-col min-h-screen">
+    <!-- start: Sidebar -->
+    <div class="fixed left-0 top-0 w-64 h-full bg-gray-900 p-4 z-50 sidebar-menu">
+        <a href="{% url 'index' %}" class="flex items-center pb-4 border-b border-b-gray-800">
+            <img src="https://placehold.co/32x32" alt="" class="w-8 h-8 rounded object-cover">
+            <span class="text-lg font-bold text-white ml-3">Admin Philia</span>
+        </a>
+        <ul class="mt-4">
+            <li class="mb-1 group active">
+                <a href="{% url 'admin_dash' %}" class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white">
+                    <i class="ri-home-2-line mr-3 text-lg"></i>
+                    <span class="text-sm">Dashboard</span>
+                </a>
+            </li>
+            <li class="mb-1 group">
+                <a href="{% url 'admin_order' %}" class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white sidebar-dropdown-toggle">
+                    <i class="ri-instance-line mr-3 text-lg"></i>
+                    <span class="text-sm">Commandes</span>
+                    <i class="ri-arrow-right-s-line ml-auto group-[.selected]:rotate-90"></i>
+                </a>
+              
+            </li>
+            <li class="mb-1 group">
+                <a href="{% url 'produit' %}" class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white sidebar-dropdown-toggle">
+                    <i class="ri-flashlight-line mr-3 text-lg"></i>
+                    <span class="text-sm">Produits</span>
+                    <i class="ri-arrow-right-s-line ml-auto group-[.selected]:rotate-90"></i>
+                </a>
+                <ul class="pl-7 mt-2 hidden group-[.selected]:block">
+                    <li class="mb-4">
+                        <a href="#" class="text-gray-300 text-sm flex items-center hover:text-gray-100">Manage services</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="mb-1 group">
+                <a href="#" class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white">
+                    <i class="ri-settings-2-line mr-3 text-lg"></i>
+                    <span class="text-sm">Utilisateurs</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="fixed top-0 left-0 w-full h-full bg-black/50 z-40 md:hidden sidebar-overlay"></div>
+      
+    <div class="content container mx-auto mt-5 w-4/5 mb-10">
+       
+        <!-- Votre contenu principal ici -->
+    </div>
+
+
+
+</body>
+</html>

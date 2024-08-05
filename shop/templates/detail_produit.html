@@ -1,0 +1,152 @@
+{% load static tailwind_tags %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détail produit</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    {% tailwind_css %}
+</head>
+<body>
+    <!-- Header -->
+    <header class="bg-gray-200 text-red-400 px-4 py-4">
+        <nav class="flex flex-col md:flex-row justify-between items-center">
+            <!-- Brand -->
+            <div class="brand font-semibold text-2xl mb-2 md:mb-0">
+                <a href="{% url 'index' %}">Philia <span class="text-white bg-red-500 rounded p-2">shop</span></a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden text-red-400 hover:text-red-600 focus:outline-none">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <!-- Menu (Visible on larger screens) -->
+            <ul class="hidden md:flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-3 font-thin text-xl">
+                <li><a class="hover:bg-red-500 hover:text-white px-2 py-1 rounded" href="{% url 'index' %}">Accueil</a></li>
+                <li><a class="hover:bg-red-500 hover:text-white px-2 py-1 rounded" href="{% url 'catalogue' %}">Catalogue</a></li>
+                {% if user.cart %}
+                <li><a class="hover:bg-red-500 hover:text-white px-2 py-1 rounded" href="{% url 'cart' %}"><i class="fa-solid fa-cart-shopping"></i> ({{ user.cart.orders.count }})</a></li>
+                {% endif %}
+                {% if user.is_authenticated %}
+                <li><a class="hover:bg-red-500 hover:text-white px-2 py-1 rounded" href="{% url 'logout' %}"><span>Bienvenue</span> <i class="fa-regular fa-circle-user"></i> {{ user.username }}</a></li>
+                {% else %}
+                <li><a class="hover:bg-red-500 hover:text-white px-2 py-1 rounded" href="{% url 'login' %}">Users</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+
+        <!-- Mobile Menu (Visible on small screens) -->
+        <div id="mobile-menu" class="md:hidden hidden mt-2 space-y-2">
+            <a class="block px-4 py-2 text-xl font-thin hover:bg-red-500 hover:text-white" href="{% url 'index' %}"><i class="fa-solid fa-house"></i></a>
+            <a class="block px-4 py-2 text-xl font-thin hover:bg-red-500 hover:text-white" href="">Produit</a>
+            {% if user.cart %}
+            <a class="block px-4 py-2 text-xl font-thin hover:bg-red-500 hover:text-white" href="{% url 'cart' %}"><i class="fa-solid fa-cart-shopping"></i> ({{ user.cart.orders.count }})</a>
+            {% endif %}
+            {% if user.is_authenticated %}
+            <a class="block px-4 py-2 text-xl font-thin hover:bg-red-500 hover:text-white" href="{% url 'logout' %}"><span>Bienvenue</span> <i class="fa-regular fa-circle-user"></i> {{ user.username }}</a>
+            {% else %}
+            <a class="block px-4 py-2 text-xl font-thin hover:bg-red-500 hover:text-white" href="{% url 'login' %}">Users</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-4">
+        <!-- Breadcrumbs -->
+        <div class="mb-4">
+            <a class="hover:underline text-xl font-thin" href="{% url 'catalogue' %}">Voir le catalogue</a>
+        </div>
+        
+        <!-- Product Detail -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Product Image -->
+            <div class="flex justify-center">
+                {% if produit %}
+                <img class="w-full h-auto max-w-md object-cover" src="{{ produit.image_produit.url }}" alt="Image de {{ produit.designation }}">
+                {% endif %}
+            </div>
+
+            <!-- Product Description -->
+            <div class="flex flex-col justify-between">
+                <div>
+                    <h1 class="font-thin text-xl border-b-2 mb-4">Description courte du produit</h1>
+                    <p class="font-thin text-justify mb-4">{{ produit.desc_courte }}</p>
+                </div>
+                <div>
+                    {% if not user.is_authenticated %}
+                    <p class="font-thin mb-4">
+                        Veuillez-vous <a class="font-bold text-red-500 underline" href="{% url 'login' %}">connectez</a> pour ajouter cet article dans votre panier.
+                    </p>
+                    {% else %}
+                    <a class="inline-block bg-red-500 text-white text-center py-2 px-4 rounded hover:bg-red-600 transition duration-200" href="{% url 'add_to_cart' produit.slug %}">Ajouter au panier</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Long Description -->
+        <div class="mt-8 mb-10">
+            <h1 class="font-thin text-xl border-b-2 mb-4">Description longue</h1>
+            <p class="font-thin text-justify">{{ produit.desc_longue }}</p>
+        </div>
+    </div>
+
+    <script>
+        // Toggle mobile menu visibility
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+
+<footer class="p-10 roboto-slab bg-gray-100 text-dark">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
+        <div>
+            <h3 class="mb-4 font-bold uppercase">Infos Pratiques</h3>
+    
+            <ul>
+                <li><a href="#" class="hover:text-gray-200">Points Fidélité</a></li>
+                <li><a href="#" class="hover:text-gray-200">Guide d'Entretien</a></li>
+                <li><a href="#" class="hover:text-gray-200">Guide des Tailles</a></li>
+                <li><a href="#" class="hover:text-gray-200">Mentions Légales</a></li>
+            </ul>
+        </div>
+        <div>
+            <h3 class="mb-4 font-bold uppercase">À Propos</h3>
+            <ul>
+                <li><a href="#" class="hover:text-gray-200">SAV</a></li>
+                <li><a href="#" class="hover:text-gray-200">Service Clients</a></li>
+                <li><a href="#" class="hover:text-gray-200">Livraisons et Retours</a></li>
+                <li><a href="#" class="hover:text-gray-200">FAQ Service Après Vente</a></li>
+                <li><a href="" class="hover:text-gray-200">Info du dev</a></li>
+            </ul>
+        </div>
+        <div>
+            <h3 class="mb-4 font-bold uppercase">Newsletter</h3>
+            <p class="mb-2">Découvrez en Avant Première Nos Tendances !</p>
+            <form action="#">
+                <input type="email" class="p-2 w-full text-black" placeholder="Saisissez votre e-mail">
+                <button type="submit" class="mt-2 p-2 w-full bg-black text-white">Transmettre</button>
+            </form>
+        </div>
+    </div>
+    <div class="max-w-6xl mx-auto mt-10 flex flex-col md:flex-row justify-between items-center text-center md:text-left">
+        <div class="mb-4 md:mb-0">
+            <p>Avis de la boutique <span class="font-bold">4.7/5</span></p>
+            <a href="#" class="text-yellow-400 hover:text-yellow-500">Voir les avis</a>
+        </div>
+        <div class="flex space-x-4">
+            <a href="#" class="hover:text-gray-200"><i class="fab fa-facebook"></i> Facebook</a>
+            <a href="#" class="hover:text-gray-200"><i class="fab fa-pinterest"></i> Pinterest</a>
+            <a href="#" class="hover:text-gray-200"><i class="fab fa-instagram"></i> Instagram</a>
+            <a href="#" class="hover:text-gray-200"><i class="fab fa-youtube"></i> YouTube</a>
+            
+        </div>
+    </div>
+    <a href=""><img src="" alt="" width="150px"></a>
+</footer>
+</body>
+</html>

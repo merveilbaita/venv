@@ -1,0 +1,157 @@
+{% load static tailwind_tags %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    {% tailwind_css %}
+    <style>
+        /* Custom styles if needed */
+    </style>
+</head>
+<body class="">
+
+    <header class="bg-gray-200 text-red-400 px-4 py-4">
+        <nav class="flex flex-col md:flex-row justify-between items-center">
+            <!-- Brand Logo -->
+            <div class="brand font-semibold text-2xl mb-4 md:mb-0">
+                <a href="{% url 'index' %}">Philia <span class="text-white bg-red-500 rounded px-2 py-1">shop</span></a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <div class="md:hidden flex items-center">
+                <button id="menu-toggle" class="text-xl text-red-400">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+
+            <!-- Menu Links -->
+            <div id="menu" class="hidden md:flex space-x-4 text-xl">
+                <a class="hover:bg-red-500 hover:text-white px-2 py-1 rounded" href="{% url 'index' %}"><i class="fa-solid fa-house"></i></a>
+                <a class="hover:bg-red-500 hover:text-white px-2 py-1 rounded" href="{% url 'catalogue' %}">Catalogue</a>
+                <a class="hover:bg-red-500 hover:text-white bg-red-400 text-white px-2 py-2 rounded" href="{% url 'login' %}">Users</a>
+            </div>
+            
+            <!-- Mobile Menu Links -->
+            <div id="mobile-menu" class="md:hidden fixed inset-0 bg-gray-800 bg-opacity-75  items-center justify-center hidden">
+                <div class="bg-white p-4 rounded-lg shadow-md w-4/5 max-w-sm">
+                    <button id="close-menu" class="text-red-400 float-right text-xl">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                    <div class="space-y-4">
+                        <a class="block text-xl hover:bg-red-500 hover:text-white px-4 py-2 rounded" href="{% url 'index' %}"><i class="fa-solid fa-house"></i> Accueil</a>
+                        <a class="block text-xl hover:bg-red-500 hover:text-white px-4 py-2 rounded" href="{% url 'catalogue' %}">Catalogue</a>
+                        <a class="block text-xl hover:bg-red-500 hover:text-white px-4 py-2 rounded bg-red-400 text-white" href="{% url 'login' %}">Users</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container mx-auto mb-10 px-4 py-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="main border shadow-md p-4">
+            {% if error %}
+            <div class="bg-red-500 text-white p-3 rounded mb-4">
+                {{ error }}
+            </div>
+            {% endif %}
+            <h1 class="font-bold text-2xl mb-4 border-b-2"> <i class="fa-solid fa-users-rectangle"></i> Connectez-vous à votre compte</h1>
+            <p class="font-thin text-lg mb-4">Connectez-vous pour avoir accès à toutes les fonctionnalités. Vos informations sont bien protégées.</p>
+            <form action="{% url 'login_user' %}" method="post" class="space-y-4">
+                {% csrf_token %}
+                <input class="block w-full rounded border-gray-300 p-2" type="text" name="username" placeholder="Nom d'utilisateur...">
+                <input class="block w-full rounded border-gray-300 p-2" type="password" name="password" placeholder="Mot de passe...">
+                <button type="submit" class="bg-red-400 text-white rounded py-2 px-4 hover:bg-red-500"> <i class="fa-solid fa-arrow-right-to-bracket"></i> Connecter</button><hr>
+               
+            </form>
+            <a class="font-bold text-green-800" href="{% url 'forget_pass' %}">Mot de passe oublier ?</a>
+        </div>
+
+        <div class="main border shadow-md p-4">
+            {% if messages %}
+            {% for message in messages %}
+            <div class="message bg-green-800 text-white p-4 {{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            <h1 class="font-bold text-2xl mb-4 border-b-2"> <i class="fa-solid fa-user-plus"></i> Créez un compte</h1>
+            <p class="font-thin text-lg mb-4">Créez un compte pour avoir accès à toutes les fonctionnalités. Vos informations sont bien protégées.</p>
+            <form action="{% url 'signup' %}" method="post" class="space-y-4">
+                {% csrf_token %}
+                <input class="block w-full rounded border-gray-300 p-2" type="text" name="username" placeholder="Nom d'utilisateur...">
+                <input class="block w-full rounded border-gray-300 p-2" type="email" name="email" placeholder="Email...">
+                <input class="block w-full rounded border-gray-300 p-2" type="password" name="password" placeholder="Mot de passe...">
+                <p class="font-thin justify-start">
+                    Rejoignez notre boutique en ligne en créant un compte et accédez à des réductions spéciales, des offres personnalisées et un suivi facile de vos commandes. Inscrivez-vous aujourd'hui et découvrez une expérience d'achat unique et personnalisée.
+                </p>
+                <button type="submit" class="bg-red-400 text-white rounded py-2 px-4 hover:bg-red-500"> <i class="fa-solid fa-plus"></i> Créer le compte</button>
+                
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript for Menu Toggle -->
+    <script>
+        // Toggle menu on mobile view
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // Close menu on mobile view
+        document.getElementById('close-menu').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.add('hidden');
+        });
+    </script>
+<footer class="p-10 roboto-slab bg-gray-100 text-dark">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
+        <div>
+            <h3 class="mb-4 font-bold uppercase">Infos Pratiques</h3>
+    
+            <ul>
+                <li><a href="#" class="hover:text-gray-200">Points Fidélité</a></li>
+                <li><a href="#" class="hover:text-gray-200">Guide d'Entretien</a></li>
+                <li><a href="#" class="hover:text-gray-200">Guide des Tailles</a></li>
+                <li><a href="#" class="hover:text-gray-200">Mentions Légales</a></li>
+            </ul>
+        </div>
+        <div>
+            <h3 class="mb-4 font-bold uppercase">À Propos</h3>
+            <ul>
+                <li><a href="#" class="hover:text-gray-200">SAV</a></li>
+                <li><a href="#" class="hover:text-gray-200">Service Clients</a></li>
+                <li><a href="#" class="hover:text-gray-200">Livraisons et Retours</a></li>
+                <li><a href="#" class="hover:text-gray-200">FAQ Service Après Vente</a></li>
+                <li><a href="" class="hover:text-gray-200">Info du dev</a></li>
+            </ul>
+        </div>
+        <div>
+            <h3 class="mb-4 font-bold uppercase">Newsletter</h3>
+            <p class="mb-2">Découvrez en Avant Première Nos Tendances !</p>
+            <form action="#">
+                <input type="email" class="p-2 w-full text-black" placeholder="Saisissez votre e-mail">
+                <button type="submit" class="mt-2 p-2 w-full bg-black text-white">Transmettre</button>
+            </form>
+        </div>
+    </div>
+    <div class="max-w-6xl mx-auto mt-10 flex flex-col md:flex-row justify-between items-center text-center md:text-left">
+        <div class="mb-4 md:mb-0">
+            <p>Avis de la boutique <span class="font-bold">4.7/5</span></p>
+            <a href="#" class="text-yellow-400 hover:text-yellow-500">Voir les avis</a>
+        </div>
+        <div class="flex space-x-4">
+            <a href="#" class="hover:text-gray-200"><i class="fab fa-facebook"></i> Facebook</a>
+            <a href="#" class="hover:text-gray-200"><i class="fab fa-pinterest"></i> Pinterest</a>
+            <a href="#" class="hover:text-gray-200"><i class="fab fa-instagram"></i> Instagram</a>
+            <a href="#" class="hover:text-gray-200"><i class="fab fa-youtube"></i> YouTube</a>
+            
+        </div>
+    </div>
+    <a href=""><img src="" alt="" width="150px"></a>
+</footer>
+</body>
+</html>

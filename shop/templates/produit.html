@@ -1,0 +1,84 @@
+{% load static tailwind_tags %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Produits</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+    {% tailwind_css %}
+</head>
+<body class="bg-gray-100">
+
+ {% include 'admin_dash.html' %}
+
+    <div class="ml-80 container mx-auto mb-80 w-3/4">
+        <h1 class="text-2xl font-bold mb-5"> <i class="fa-solid fa-box-open"></i> Produit en stock</h1>
+
+        <table class="min-w-full bg-white border border-gray-300 mb mdl-data-table">
+            <thead class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                <tr>
+                    <th class="py-3 px-6 text-center">Id</th>
+                    <th class="py-3 px-6 text-left">Designation</th>
+                    <th class="py-3 px-6 text-left">Description</th>
+                    <th class="py-3 px-6 text-center">Prix</th>
+                    <th class="py-3 px-6 text-left">Qte en stock</th>
+                    <th class="py-3 px-6 text-left">Categorie</th>
+                    <th class="py-3 px-6 text-left">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for produit in produits %}
+                <tr class="bg-gray-100 hover:bg-gray-200">
+                    <td class="py-2 px-4 text-center">{{ produit.id }}</td>
+                    <td class="py-2 px-4 border-b">{{ produit.designation }}</td>
+                    <td class="py-2 px-4 border-b">{{ produit.desc_courte }}</td>
+                    <td class="py-2 px-4 text-center">{{ produit.prix }} $</td>
+                    <td class="py-2 px-4 text-center">{{ produit.qte }}</td>
+                    <td class="py-2 px-4 border-b">{{ produit.categorie }}</td>
+                    <td class="py-2 px-4 border-b">
+                        {% if produit.disponible == True %}
+                        <p class="text-green-600 font-semibold">Disponible</p>
+                        {% else %}
+                        <p class="text-red-600 font-semibold">Indisponible</p>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+     
+    </div>
+    <script>
+        $(document).ready(function() {
+            $('table').DataTable({
+                "dom": '<"flex justify-between items-center"<"length-menu"l><"filter-input"f>>rt<"flex justify-between items-center"<"info-text"i><"pagination"p>>',
+                "language": {
+                    "lengthMenu": "Afficher _MENU_ entrées",
+                    "zeroRecords": "Aucun enregistrement trouvé",
+                    "info": "Affichage de _START_ à _END_ de _TOTAL_ entrées",
+                    "infoEmpty": "Aucune entrée disponible",
+                    "infoFiltered": "(filtré de _MAX_ entrées au total)",
+                    "search": "Rechercher:",
+                    "paginate": {
+                        "first": "Premier",
+                        "last": "Dernier",
+                        "next": "Suivant",
+                        "previous": "Précédent"
+                    }
+                },
+                "initComplete": function() {
+                    $('div.dataTables_length select').addClass('form-select form-select-sm block w-full mt-1');
+                    $('div.dataTables_filter input').addClass('form-input form-input-sm block w-full mt-1');
+                }
+            });
+        });
+    </script>
+    
+    
+</body>
+</html>

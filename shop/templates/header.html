@@ -1,0 +1,19 @@
+
+<header class="bg-gray-200 text-red-400 px-2 p-4 w-full">
+    <nav class="flex justify-between">
+        <div class="brand font-semibold text-2xl"><a href="{% url 'index' %}">Philia <span class="text-white bg-red-500 rounded p-2">shop</span></a></div>
+        <ul class="space-x-3 font-thin text-xl">
+            <a class="hover:bg-red-500 hover:py-2 hover:rounded hover:text-white hover:px-2" href="{% url 'index' %}">Acceuil</a>
+            <a class="hover:bg-red-500 hover:py-2 hover:rounded hover:text-white hover:px-2" href="{% url 'catalogue' %}">Catalogue</a>
+        
+            {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}">{{ user.username }}</a>
+            {% else %}
+            <a class="hover:bg-red-500 hover:py-2 hover:rounded hover:text-white hover:px-2" href="{% url 'login' %}">Users</a>
+            {% endif %}
+        </ul>
+        <div class="flex">
+            <input class="rounded" type="text" placeholder="Rechercher">
+        </div>
+    </nav>
+</header>
