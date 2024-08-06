@@ -1557,6 +1557,10 @@ select {
   text-transform: uppercase;
 }
 
+.lowercase {
+  text-transform: lowercase;
+}
+
 .leading-normal {
   line-height: 1.5;
 }
