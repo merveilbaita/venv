@@ -189,3 +189,15 @@ def produit(request):
     if request.user.is_authenticated:
         produit = Produit.objects.all()
         return render(request, 'produit.html', context={"produits":produit})
+    
+@login_required
+@user_passes_test(is_admin)
+def delete_order(request, order_id):
+    if request.method == 'POST':
+        try:
+            order = get_object_or_404(Order, id=order_id)
+            order.delete()
+            messages.success(request, "La commande a été supprimée avec succès.")
+        except Order.DoesNotExist:
+            messages.error(request, "Cette commande n'existe pas.")
+    return redirect('admin_order')
