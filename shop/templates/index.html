@@ -49,7 +49,7 @@
             <li><a class="block hover:bg-red-500 hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'login' %}">Users</a></li>
             {% endif %}
             {% if user.is_admin %}
-            <li><a class="block hover:bg-red-500 hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'admin_order' %}"> <i class="fa-solid fa-truck-fast"></i> Liste des commandes</a></li>
+            <li><a class="block hover:bg-red-500 hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'admin_dash' %}"> <i class="fa-solid fa-truck-fast"></i> Dashboard</a></li>
             {% endif %}
         </ul>
     </header>
