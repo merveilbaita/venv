@@ -15,5 +15,6 @@ urlpatterns = [
     path('dash', admin_dash, name='admin_dash'),
     path('prod', produit, name='produit'),
     path('ord/orders/delete/<int:order_id>/', delete_order, name='delete_order'),
+    path('adr', adress, name='adress'),
     
 ]

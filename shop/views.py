@@ -19,6 +19,12 @@ def index(request):
     produits = Produit.objects.order_by()[:3]
     return render(request, 'index.html', context={'produits':produits})
 
+
+
+def adress(request):
+    adresses = ShippingAddress.objects.all()
+    return render(request, 'adresse_dash.html', context={'adresses':adresses})
+
 def catalogue(request):
     categorie_smartphone = Categorie.objects.get(nom="smartphone")
     produit_smartphone = Produit.objects.filter(categorie=categorie_smartphone)
