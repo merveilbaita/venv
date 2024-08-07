@@ -1,0 +1,85 @@
+{% load static tailwind_tags %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Règles de Confidentialité</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header class="bg-gray-100 text-red-400 px-2 p-4 w-full fixed z-10">
+        <nav class="flex flex-wrap justify-between items-center">
+            <!-- Brand -->
+            <div class="brand font-semibold text-2xl mb-2 lg:mb-0">
+                <a href="{% url 'index' %}">Philia <span class="text-white bg-red-500 rounded p-2">shop</span></a>
+            </div>
+            
+            <!-- Search Bar -->
+         
+            
+            <!-- Menu Button for Mobile -->
+            <div class="lg:hidden">
+                <button id="menu-button" class="text-red-400 focus:outline-none">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <!-- Navigation Links -->
+            <ul id="menu" class="hidden lg:flex space-x-3 font-thin text-xl">
+                <li><a class="hover:bg-red-500 hover:py-2 hover:rounded hover:text-white bg-red-400 text-white px-2 py-2 rounded" href="{% url 'index' %}"><i class="fa-solid fa-house"></i></a></li>
+                <li><a class="hover:bg-red-500 hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'catalogue' %}">Catalogues</a></li>
+                {% if user.is_authenticated %}
+                <li><a href="{% url 'logout' %}"><span>Bienvenue : </span> <i class="fa-regular fa-circle-user"></i> {{ user.username }}</a></li>
+                {% else %}
+                <li><a class="hover:bg-red-500 hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'login' %}">Users</a></li>
+                {% endif %}
+                {% if user.is_admin %}
+                <li><a class="hover:bg-red-500 hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'admin_dash' %}"> <i class="fa-solid fa-user"></i> Dashboard</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+        
+        <!-- Mobile Menu -->
+        <ul id="mobile-menu" class="lg:hidden hidden space-y-1 mt-2">
+            <li><a class="block hover:bg-red-500 hover:py-2 hover:rounded hover:text-white bg-red-400 text-white px-2 py-2 rounded" href="{% url 'index' %}"><i class="fa-solid fa-house"></i></a></li>
+            <li><a class="block hover:bg-red-500 hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'catalogue' %}">Catalogues</a></li>
+            {% if user.is_authenticated %}
+            <li><a class="block hover:bg-red-500 hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'logout' %}"><span>Bienvenue : </span> <i class="fa-regular fa-circle-user"></i> {{ user.username }}</a></li>
+            {% else %}
+            <li><a class="block hover:bg-red-500 hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'login' %}">Users</a></li>
+            {% endif %}
+            {% if user.is_admin %}
+            <li><a class="block hover:bg-red-500 hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'admin_dash' %}"> <i class="fa-solid fa-truck-fast"></i> Dashboard</a></li>
+            {% endif %}
+        </ul>
+    </header>
+    
+    <main>
+        <section>
+            <h2>Introduction</h2>
+            <p>Nous nous engageons à protéger votre vie privée. Cette politique de confidentialité explique comment nous recueillons, utilisons et partageons vos informations.</p>
+            
+            <h2>Informations Collectées</h2>
+            <p>Nous recueillons des informations personnelles lorsque vous vous inscrivez, effectuez des achats, ou interagissez avec notre site.</p>
+            
+            <h2>Utilisation des Informations</h2>
+            <p>Les informations collectées sont utilisées pour améliorer nos services, personnaliser votre expérience et traiter vos commandes.</p>
+            
+            <h2>Partage des Informations</h2>
+            <p>Nous ne partageons pas vos informations personnelles avec des tiers sans votre consentement, sauf dans les cas prévus par la loi.</p>
+            
+            <h2>Cookies</h2>
+            <p>Nous utilisons des cookies pour améliorer votre expérience sur notre site. Vous pouvez gérer vos préférences de cookies dans les paramètres de votre navigateur.</p>
+            
+            <h2>Contact</h2>
+            <p>Pour toute question concernant cette politique de confidentialité, veuillez nous contacter à l'adresse : <a href="mailto:support@example.com">support@example.com</a></p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; {{ current_year }} MonSiteEcommerce. Tous droits réservés.</p>
+    </footer>
+</body>
+</html>
