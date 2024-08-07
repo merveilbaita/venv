@@ -11,28 +11,31 @@
 </head>
 <body>
     <!-- Header -->
-    <header class="bg-gray-200 text-red-400 px-4 py-4">
-        <nav class="flex flex-col md:flex-row justify-between items-center">
-            <!-- Brand -->
-            <div class="brand font-semibold text-2xl mb-2 md:mb-0">
-                <a href="{% url 'index' %}">Philia <span class="text-white bg-red-500 rounded p-2">shop</span></a>
+     <!-- Header -->
+     <header class="bg-gray-200 text-red-400 px-4 py-4">
+        <nav class="flex justify-between items-center">
+            <!-- Brand and Mobile Menu Button -->
+            <div class="flex items-center ml-auto md:ml-0">
+                <!-- Brand -->
+                <div class="brand font-semibold text-2xl mr-4">
+                    <a href="{% url 'index' %}">Philia <span class="text-white bg-red-500 rounded p-2">shop</span></a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-button" class="md:hidden text-red-400 hover:text-red-600 focus:outline-none">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
             </div>
 
-          
-
-            <!-- Mobile Menu Button -->
-            <button id="mobile-menu-button" class="md:hidden text-red-400 hover:text-red-600 focus:outline-none">
-                <i class="fa-solid fa-bars"></i>
-            </button>
-
-            <div class="flex lowercase">
+            <!-- Cart (Visible on all screens) -->
+            <div class="flex lowercase md:ml-auto">
                 {% if user.cart %}
                 <a class="hover:bg-red-500 hover:text-white px-2 py-1 rounded lowercase" href="{% url 'cart' %}"><i class="fa-solid fa-cart-shopping"> Voir le panier</i> ({{ user.cart.orders.count }})</a>
                 {% endif %}
             </div>
 
             <!-- Menu (Visible on larger screens) -->
-            <ul class="hidden md:flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-3 font-thin text-xl">
+            <ul class="hidden md:flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-3 font-thin text-xl ml-auto">
                 <li><a class="hover:bg-red-500 hover:text-white px-2 py-1 rounded" href="{% url 'index' %}">Accueil</a></li>
                 <li><a class="hover:bg-red-500 hover:text-white px-2 py-1 rounded" href="{% url 'catalogue' %}">Catalogue</a></li>
                 {% if user.cart %}
@@ -49,7 +52,7 @@
         <!-- Mobile Menu (Visible on small screens) -->
         <div id="mobile-menu" class="md:hidden hidden mt-2 space-y-2">
             <a class="block px-4 py-2 text-xl font-thin hover:bg-red-500 hover:text-white" href="{% url 'index' %}"><i class="fa-solid fa-house"></i></a>
-            <a class="block px-4 py-2 text-xl font-thin hover:bg-red-500 hover:text-white" href="">Produits</a>
+            <a class="block px-4 py-2 text-xl font-thin hover:bg-red-500 hover:text-white" href="{% url 'catalogue' %}">Catalogue</a>
             {% if user.is_authenticated %}
             <a class="block px-4 py-2 text-xl font-thin hover:bg-red-500 hover:text-white" href="{% url 'logout' %}"><span>Bienvenue</span> <i class="fa-regular fa-circle-user"></i> {{ user.username }}</a>
             {% else %}
@@ -57,7 +60,6 @@
             {% endif %}
         </div>
     </header>
-
     <!-- Main Content -->
     <div class="container mx-auto px-4 py-4">
         <!-- Breadcrumbs -->

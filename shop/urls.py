@@ -17,4 +17,5 @@ urlpatterns = [
     path('ord/orders/delete/<int:order_id>/', delete_order, name='delete_order'),
     path('adr', adress, name='adress'),
     
+    
 ]

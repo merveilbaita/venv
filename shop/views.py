@@ -207,3 +207,8 @@ def delete_order(request, order_id):
         except Order.DoesNotExist:
             messages.error(request, "Cette commande n'existe pas.")
     return redirect('admin_order')
+
+def search_produits(request):
+    query = request.GET.get('q')
+    produits = Produit.objects.filter(designation__icontains=query) if query else Produit.objects.all()
+    return render(request, 'catalogue_produit.html', {'produits': produits, 'query': query})

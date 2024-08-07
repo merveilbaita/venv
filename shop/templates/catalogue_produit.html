@@ -27,8 +27,13 @@
                 <li><a class="hover:bg-red-500 hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'login' %}">Users</a></li>
                 {% endif %}
             </ul>
-            <div class="hidden lg:flex">
-                <input class="rounded border-gray-300 px-2 py-1" type="text" placeholder="Rechercher">
+            <div class="flex-grow mx-4 mt-4 mb-2 lg:mb-0">
+                <form action="{% url 'search_produits' %}" method="GET" class="flex items-center">
+                    <input type="text" name="q" class="w-full px-4 py-2 rounded-md border border-red-400 focus:outline-none focus:ring-2 focus:ring-red-400" placeholder="Recherche...">
+                    <button type="submit" class="bg-red-500 text-white ml-4 px-4 py-2 rounded-r-md border border-red-500">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
             </div>
         </nav>
         <ul id="mobile-menu" class="lg:hidden hidden mt-2 space-y-2">
@@ -139,58 +144,19 @@
         </section>
     </main>
 
+    <footer class="bg-gray-200 text-center py-4 mt-4">
+        <p>&copy; 2023 Philia Shop. Tous droits réservés.</p>
+    </footer>
+    
     <script>
-        document.getElementById('menu-button').addEventListener('click', function() {
-            var menu = document.getElementById('mobile-menu');
+        const menuButton = document.getElementById('menu-button');
+        const menu = document.getElementById('menu');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        menuButton.addEventListener('click', () => {
             menu.classList.toggle('hidden');
+            mobileMenu.classList.toggle('hidden');
         });
     </script>
-
-<footer class="p-10 roboto-slab bg-gray-100 text-dark">
-    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
-        <div>
-            <h3 class="mb-4 font-bold uppercase">Infos Pratiques</h3>
-    
-            <ul>
-                <li><a href="#" class="hover:text-gray-200">Points Fidélité</a></li>
-                <li><a href="#" class="hover:text-gray-200">Guide d'Entretien</a></li>
-                <li><a href="#" class="hover:text-gray-200">Guide des Tailles</a></li>
-                <li><a href="#" class="hover:text-gray-200">Mentions Légales</a></li>
-            </ul>
-        </div>
-        <div>
-            <h3 class="mb-4 font-bold uppercase">À Propos</h3>
-            <ul>
-                <li><a href="#" class="hover:text-gray-200">SAV</a></li>
-                <li><a href="#" class="hover:text-gray-200">Service Clients</a></li>
-                <li><a href="#" class="hover:text-gray-200">Livraisons et Retours</a></li>
-                <li><a href="#" class="hover:text-gray-200">FAQ Service Après Vente</a></li>
-                <li><a href="" class="hover:text-gray-200">Info du dev</a></li>
-            </ul>
-        </div>
-        <div>
-            <h3 class="mb-4 font-bold uppercase">Newsletter</h3>
-            <p class="mb-2">Découvrez en Avant Première Nos Tendances !</p>
-            <form action="#">
-                <input type="email" class="p-2 w-full text-black" placeholder="Saisissez votre e-mail">
-                <button type="submit" class="mt-2 p-2 w-full bg-black text-white">Transmettre</button>
-            </form>
-        </div>
-    </div>
-    <div class="max-w-6xl mx-auto mt-10 flex flex-col md:flex-row justify-between items-center text-center md:text-left">
-        <div class="mb-4 md:mb-0">
-            <p>Avis de la boutique <span class="font-bold">4.7/5</span></p>
-            <a href="#" class="text-yellow-400 hover:text-yellow-500">Voir les avis</a>
-        </div>
-        <div class="flex space-x-4">
-            <a href="#" class="hover:text-gray-200"><i class="fab fa-facebook"></i> Facebook</a>
-            <a href="#" class="hover:text-gray-200"><i class="fab fa-pinterest"></i> Pinterest</a>
-            <a href="#" class="hover:text-gray-200"><i class="fab fa-instagram"></i> Instagram</a>
-            <a href="#" class="hover:text-gray-200"><i class="fab fa-youtube"></i> YouTube</a>
-            
-        </div>
-    </div>
-    <a href=""><img src="" alt="" width="150px"></a>
-</footer>
 </body>
 </html>
