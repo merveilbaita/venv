@@ -24,6 +24,11 @@ class Produit(models.Model):
     categorie = models.ForeignKey("Categorie", on_delete=models.CASCADE)
     create_at = models.DateTimeField(default=timezone.now)
 
+    # Champs pour les images supplémentaires
+    image_similaire_1 = models.ImageField(upload_to='produit_image', blank=True, null=True)
+    image_similaire_2 = models.ImageField(upload_to='produit_image', blank=True, null=True)
+    image_similaire_3 = models.ImageField(upload_to='produit_image', blank=True, null=True)
+
     def __str__(self):
         return self.designation
     

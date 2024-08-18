@@ -18,5 +18,4 @@ urlpatterns = [
     path('adr', adress, name='adress'),
     path('regle/', privacy_policy, name='regle'),
     
-    
 ]

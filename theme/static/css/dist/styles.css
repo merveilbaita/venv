@@ -1111,6 +1111,10 @@ select {
   width: 75%;
 }
 
+.w-36 {
+  width: 9rem;
+}
+
 .w-4\/5 {
   width: 80%;
 }
@@ -1444,6 +1448,10 @@ select {
      object-fit: fill;
 }
 
+.p-1 {
+  padding: 0.25rem;
+}
+
 .p-10 {
   padding: 2.5rem;
 }
@@ -1501,6 +1509,11 @@ select {
 .py-4 {
   padding-top: 1rem;
   padding-bottom: 1rem;
+}
+
+.py-6 {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
 }
 
 .py-8 {
@@ -1604,6 +1617,11 @@ select {
 .text-black {
   --tw-text-opacity: 1;
   color: rgb(0 0 0 / var(--tw-text-opacity));
+}
+
+.text-blue-600 {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity));
 }
 
 .text-blue-700 {
@@ -1883,6 +1901,10 @@ select {
 
   .md\:ml-auto {
     margin-left: auto;
+  }
+
+  .md\:block {
+    display: block;
   }
 
   .md\:flex {

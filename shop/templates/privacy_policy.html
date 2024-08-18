@@ -7,25 +7,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Règles de Confidentialité</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-    <header class="bg-gray-100 text-red-400 px-2 p-4 w-full fixed z-10">
+    <header class="bg-gray-100 text-red-400 px-2 p-4 w-full sticky top-0">
         <nav class="flex flex-wrap justify-between items-center">
             <!-- Brand -->
             <div class="brand font-semibold text-2xl mb-2 lg:mb-0">
                 <a href="{% url 'index' %}">Philia <span class="text-white bg-red-500 rounded p-2">shop</span></a>
             </div>
-            
+
             <!-- Search Bar -->
-         
-            
+
+
             <!-- Menu Button for Mobile -->
             <div class="lg:hidden">
                 <button id="menu-button" class="text-red-400 focus:outline-none">
                     <i class="fas fa-bars"></i>
                 </button>
             </div>
-            
+
             <!-- Navigation Links -->
             <ul id="menu" class="hidden lg:flex space-x-3 font-thin text-xl">
                 <li><a class="hover:bg-red-500 hover:py-2 hover:rounded hover:text-white bg-red-400 text-white px-2 py-2 rounded" href="{% url 'index' %}"><i class="fa-solid fa-house"></i></a></li>
@@ -40,7 +42,7 @@
                 {% endif %}
             </ul>
         </nav>
-        
+
         <!-- Mobile Menu -->
         <ul id="mobile-menu" class="lg:hidden hidden space-y-1 mt-2">
             <li><a class="block hover:bg-red-500 hover:py-2 hover:rounded hover:text-white bg-red-400 text-white px-2 py-2 rounded" href="{% url 'index' %}"><i class="fa-solid fa-house"></i></a></li>
@@ -55,31 +57,32 @@
             {% endif %}
         </ul>
     </header>
-    
-    <main>
+<main class="mt-10 max-w-4xl mx-auto px-4 py-6 bg-white rounded-lg shadow-md">
         <section>
-            <h2>Introduction</h2>
-            <p>Nous nous engageons à protéger votre vie privée. Cette politique de confidentialité explique comment nous recueillons, utilisons et partageons vos informations.</p>
-            
-            <h2>Informations Collectées</h2>
-            <p>Nous recueillons des informations personnelles lorsque vous vous inscrivez, effectuez des achats, ou interagissez avec notre site.</p>
-            
-            <h2>Utilisation des Informations</h2>
-            <p>Les informations collectées sont utilisées pour améliorer nos services, personnaliser votre expérience et traiter vos commandes.</p>
-            
-            <h2>Partage des Informations</h2>
-            <p>Nous ne partageons pas vos informations personnelles avec des tiers sans votre consentement, sauf dans les cas prévus par la loi.</p>
-            
-            <h2>Cookies</h2>
-            <p>Nous utilisons des cookies pour améliorer votre expérience sur notre site. Vous pouvez gérer vos préférences de cookies dans les paramètres de votre navigateur.</p>
-            
-            <h2>Contact</h2>
-            <p>Pour toute question concernant cette politique de confidentialité, veuillez nous contacter à l'adresse : <a href="mailto:support@example.com">support@example.com</a></p>
+            <h2 class="text-2xl font-semibold mb-4 border-b pb-2 text-red-500 text-center">Introduction</h2>
+            <p class="mb-4">Nous nous engageons à protéger votre vie privée. Cette politique de confidentialité explique comment nous recueillons, utilisons et partageons vos informations.</p>
+
+            <h2 class="text-2xl font-semibold mb-4 border-b pb-2">Informations Collectées</h2>
+            <p class="mb-4">Nous recueillons des informations personnelles lorsque vous vous inscrivez, effectuez des achats, ou interagissez avec notre site.</p>
+
+            <h2 class="text-2xl font-semibold mb-4 border-b pb-2">Utilisation des Informations</h2>
+            <p class="mb-4">Les informations collectées sont utilisées pour améliorer nos services, personnaliser votre expérience et traiter vos commandes.</p>
+
+            <h2 class="text-2xl font-semibold mb-4 border-b pb-2">Partage des Informations</h2>
+            <p class="mb-4">Nous ne partageons pas vos informations personnelles avec des tiers sans votre consentement, sauf dans les cas prévus par la loi.</p>
+
+            <h2 class="text-2xl font-semibold mb-4 border-b pb-2">Cookies</h2>
+            <p class="mb-4">Nous utilisons des cookies pour améliorer votre expérience sur notre site. Vous pouvez gérer vos préférences de cookies dans les paramètres de votre navigateur.</p>
+
+            <h2 class="text-2xl font-semibold mb-4 border-b pb-2">Contact</h2>
+            <p>Pour toute question concernant cette politique de confidentialité, veuillez nous contacter à l'adresse : <a href="mailto:baitamerveil4@gmail.com" class="text-blue-600 hover:underline">baitamerveil4@gmail.com</a></p>
         </section>
     </main>
 
-    <footer>
-        <p>&copy; {{ current_year }} MonSiteEcommerce. Tous droits réservés.</p>
+    <footer class="bg-gray-800 text-white py-4 mt-10">
+        <div class="container mx-auto text-center">
+            <p>&copy; {{ current_year }} PhiliaShop. Tous droits réservés.</p>
+        </div>
     </footer>
 </body>
 </html>
