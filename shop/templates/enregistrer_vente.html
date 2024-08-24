@@ -26,8 +26,13 @@
           
         </nav>
     </header>
-
+    
     <main class="mt-8 w-3/4 mx-auto">
+
+        <div class="font-thin  text-2xl">
+            <h1><a class="" href="{% url 'catalogue' %}">Voir le catalogue</a></h1>
+        </div>
+
         <h2 class="font-bold text-2xl mb-4">Enregistrer une Vente pour {{ produit.designation }}</h2>
         {% if messages %}
         {% for message in messages %}
@@ -44,15 +49,21 @@
             </div>
             <div class="mb-4">
                 <label for="type_vente" class="block text-gray-700 text-sm font-bold mb-2">Type de Vente :</label>
-                <select name="type_vente" required class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-                    <option value="en boutique">En Boutique</option>
+                <select name="type_vente" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                     <option value="en ligne">En Ligne</option>
+                    <option value="en boutique">En Boutique</option>
                 </select>
             </div>
+            <div class="mb-4">
+                <label for="nom_client" class="block text-gray-700 text-sm font-bold mb-2">Nom du Client :</label>
+                <input type="text" name="nom_client" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+            <div class="mb-4">
+                <label for="numero_vente" class="block text-gray-700 text-sm font-bold mb-2">Numéro de Vente :</label>
+                <input type="text" name="numero_vente" value="{{ numero_vente }}" readonly class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
             <div class="flex items-center justify-between">
-                <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                    Enregistrer la Vente
-                </button>
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Enregistrer</button>
             </div>
         </form>
     </main>

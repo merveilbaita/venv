@@ -8,6 +8,8 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import ShippingAddress, Vente
 from django.db import transaction
 from django.db.models import F
+import uuid
+from django.utils.text import slugify
 
 
 from shop.models import Produit , Categorie, Cart, Order
@@ -222,6 +224,8 @@ def enregistrer_vente(request, produit_id):
         quantite = int(request.POST.get('quantite'))
         type_vente = request.POST.get('type_vente')
         prix_unitaire = produit.prix
+        nom_client = request.POST.get('nom_client')
+        numero_vente = slugify(str(uuid.uuid4()))[:20]  # Génère un identifiant unique
 
         try:
             produit.update_stock(quantite)  # Assurez-vous que ceci fonctionne comme prévu
@@ -231,11 +235,19 @@ def enregistrer_vente(request, produit_id):
                 type_vente=type_vente,
                 prix_unitaire=prix_unitaire,
                 vendeur=request.user,
+                nom_client=nom_client,
+                numero_vente=numero_vente,
             )
             messages.success(request, "La vente a été enregistrée avec succès.")
-            return redirect(reverse('enregistrer_vente', kwargs={'produit_id': produit_id}))
+            return redirect(reverse('facture_vente', kwargs={'vente_id': vente.id}))  # Redirection vers la facture
 
         except ValueError as e:
             messages.error(request, str(e))
 
     return render(request, 'enregistrer_vente.html', context={'produit': produit})
+
+
+@login_required
+def facture_vente(request, vente_id):
+    vente = get_object_or_404(Vente, id=vente_id)
+    return render(request, 'facture.html', context={'vente': vente})

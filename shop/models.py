@@ -68,6 +68,9 @@ class Vente(models.Model):
     total = models.IntegerField()
     date_vente = models.DateTimeField(default=timezone.now)
     vendeur = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
+    nom_client = models.CharField(max_length=255, blank=True, null=True)
+    numero_vente = models.CharField(max_length=100, default='DEFAULT_VALUE')
+    
 
     def save(self, *args, **kwargs):
         self.total = self.quantite * self.prix_unitaire
