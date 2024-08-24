@@ -5,7 +5,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required, user_passes_test
-from .models import ShippingAddress
+from .models import ShippingAddress, Vente
 from django.db import transaction
 from django.db.models import F
 
@@ -213,3 +213,32 @@ def privacy_policy(request):
         'current_year': timezone.now().year,
     }
     return render(request, 'privacy_policy.html', context)
+
+
+@login_required
+def enregistrer_vente(request, produit_id):
+    produit = get_object_or_404(Produit, id=produit_id)
+    if request.method == 'POST':
+        quantite = int(request.POST.get('quantite'))
+        type_vente = request.POST.get('type_vente')
+        prix_unitaire = produit.prix
+        
+        try:
+            produit.update_stock(quantite)  # Assurez-vous que ceci fonctionne comme prévu
+            
+            vente = Vente.objects.create(
+                produit=produit,
+                quantite=quantite,
+                type_vente=type_vente,
+                prix_unitaire=prix_unitaire,
+                vendeur=request.user,
+            )
+            vente.save()
+            
+            messages.success(request, "La vente a été enregistrée avec succès.")
+            return redirect(reverse('enregistrer_vente', kwargs={'produit_id': produit_id}))
+        
+        except ValueError as e:
+            messages.error(request, str(e))
+    
+    return render(request, 'enregistrer_vente.html', context={'produit': produit})

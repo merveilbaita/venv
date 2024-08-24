@@ -3,8 +3,6 @@ from django.db import models
 from django.forms import ValidationError
 from django.utils import timezone
 
-
-
 class Categorie(models.Model):
     nom = models.CharField(max_length=120)
     description = models.TextField(blank=True, null=True)
@@ -16,7 +14,7 @@ class Produit(models.Model):
     designation = models.CharField(max_length=120)
     slug = models.SlugField(max_length=100)
     desc_courte = models.TextField(blank=True, null=True)
-    desc_longue= models.TextField(blank=True, null=True)
+    desc_longue = models.TextField(blank=True, null=True)
     prix = models.IntegerField()
     qte = models.IntegerField(default=0, blank=True, null=True)
     disponible = models.BooleanField(default=True)
@@ -29,9 +27,58 @@ class Produit(models.Model):
     image_similaire_2 = models.ImageField(upload_to='produit_image', blank=True, null=True)
     image_similaire_3 = models.ImageField(upload_to='produit_image', blank=True, null=True)
 
+    def update_stock(self, quantite, action='decrease'):
+        if action == 'decrease':
+            if self.qte >= quantite:
+                self.qte -= quantite
+                self.save()
+            else:
+                raise ValueError("Quantité en stock insuffisante")
+        elif action == 'increase':
+            self.qte += quantite
+            self.save()
+        else:
+            raise ValueError("Action non reconnue")
+
     def __str__(self):
         return self.designation
-    
+
+class Stock(models.Model):
+    produit = models.OneToOneField(Produit, on_delete=models.CASCADE)
+    quantite_disponible = models.IntegerField(default=0)
+    seuil_minimum = models.IntegerField(default=5)
+    emplacement_stock = models.CharField(max_length=255, blank=True, null=True)
+
+    def __str__(self):
+        return f"Stock pour {self.produit.designation}"
+
+    def verifier_stock(self):
+        if self.quantite_disponible < self.seuil_minimum:
+            # Gérer une alerte pour le stock bas
+            pass
+
+class Vente(models.Model):
+    TYPE_VENTE_CHOICES = (
+        ('en ligne', 'En Ligne'),
+        ('en boutique', 'En Boutique'),
+    )
+    produit = models.ForeignKey(Produit, on_delete=models.CASCADE)
+    quantite = models.IntegerField()
+    type_vente = models.CharField(max_length=20, choices=TYPE_VENTE_CHOICES)
+    prix_unitaire = models.IntegerField()
+    total = models.IntegerField()
+    date_vente = models.DateTimeField(default=timezone.now)
+    vendeur = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.pk:  # Vérifie si la vente est nouvellement créée (n'a pas encore été sauvegardée)
+            self.produit.update_stock(self.quantite)
+        self.total = self.quantite * self.prix_unitaire
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"Vente de {self.produit.designation} - {self.type_vente} - {self.date_vente.strftime('%Y-%m-%d')}"
+
 
 class Order(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -41,7 +88,7 @@ class Order(models.Model):
     ordered_date = models.DateTimeField(blank=True, null=True)
 
     def __str__(self) -> str:
-        return f"{self.produit.designation} ({self.qte_order})" 
+        return f"{self.produit.designation} ({self.qte_order})"
     
     def complete_order(self):
         produit = self.produit
@@ -59,7 +106,7 @@ class Order(models.Model):
         return total
 
 class Cart(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE , null=True, blank=True)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
     orders = models.ManyToManyField(Order)
     ordered_at = models.DateTimeField(blank=True, null=True)
 
