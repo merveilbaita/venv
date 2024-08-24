@@ -56,7 +56,6 @@ class Stock(models.Model):
         if self.quantite_disponible < self.seuil_minimum:
             # Gérer une alerte pour le stock bas
             pass
-
 class Vente(models.Model):
     TYPE_VENTE_CHOICES = (
         ('en ligne', 'En Ligne'),
@@ -71,13 +70,12 @@ class Vente(models.Model):
     vendeur = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
 
     def save(self, *args, **kwargs):
-        if not self.pk:  # Vérifie si la vente est nouvellement créée (n'a pas encore été sauvegardée)
-            self.produit.update_stock(self.quantite)
         self.total = self.quantite * self.prix_unitaire
         super().save(*args, **kwargs)
 
     def __str__(self):
         return f"Vente de {self.produit.designation} - {self.type_vente} - {self.date_vente.strftime('%Y-%m-%d')}"
+
 
 
 class Order(models.Model):

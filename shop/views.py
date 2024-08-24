@@ -222,10 +222,9 @@ def enregistrer_vente(request, produit_id):
         quantite = int(request.POST.get('quantite'))
         type_vente = request.POST.get('type_vente')
         prix_unitaire = produit.prix
-        
+
         try:
             produit.update_stock(quantite)  # Assurez-vous que ceci fonctionne comme prévu
-            
             vente = Vente.objects.create(
                 produit=produit,
                 quantite=quantite,
@@ -233,12 +232,10 @@ def enregistrer_vente(request, produit_id):
                 prix_unitaire=prix_unitaire,
                 vendeur=request.user,
             )
-            vente.save()
-            
             messages.success(request, "La vente a été enregistrée avec succès.")
             return redirect(reverse('enregistrer_vente', kwargs={'produit_id': produit_id}))
-        
+
         except ValueError as e:
             messages.error(request, str(e))
-    
+
     return render(request, 'enregistrer_vente.html', context={'produit': produit})
