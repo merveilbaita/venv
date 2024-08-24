@@ -1,0 +1,77 @@
+{% load static tailwind_tags %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Ventes du Jour</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+    {% tailwind_css %}
+</head>
+<body class="bg-gray-100 text-gray-900">
+    {% include 'admin_dash.html' %}
+
+    <div class="ml-80 container mx-auto mb-80 w-3/4">
+        <h1 class="text-2xl font-bold mb-4">Ventes du {{ today|date:"d/m/Y" }}</h1>
+        <table class="min-w-full bg-white border border-gray-200">
+            <thead>
+                <tr class="bg-gray-100 border-b">
+                    <th class="py-2 px-4 text-left">Produit</th>
+                    <th class="py-2 px-4 text-left">Quantité</th>
+                    <th class="py-2 px-4 text-left">Prix Unitaire</th>
+                    <th class="py-2 px-4 text-left">Total</th>
+                    <th class="py-2 px-4 text-left">Nom du Client</th>
+                    <th class="py-2 px-4 text-left">Date de Vente</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for vente in ventes %}
+                    <tr>
+                        <td class="border px-4 py-2">{{ vente.produit.designation }}</td>
+                        <td class="border px-4 py-2">{{ vente.quantite }}</td>
+                        <td class="border px-4 py-2">{{ vente.prix_unitaire }} $</td>
+                        <td class="border px-4 py-2">{{ vente.total }} $</td>
+                        <td class="border px-4 py-2">{{ vente.nom_client }}</td>
+                        <td class="border px-4 py-2">{{ vente.date_vente|date:"d/m/Y H:i" }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center py-4">Aucune vente enregistrée aujourd'hui.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="mt-4">
+            <p class="font-bold">Total vendu aujourd'hui : {{ total_vendu }} $</p>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('table').DataTable({
+                "dom": '<"flex justify-between items-center"<"length-menu"l><"filter-input"f>>rt<"flex justify-between items-center"<"info-text"i><"pagination"p>>',
+                "language": {
+                    "lengthMenu": "Afficher _MENU_ entrées",
+                    "zeroRecords": "Aucun enregistrement trouvé",
+                    "info": "Affichage de _START_ à _END_ de _TOTAL_ entrées",
+                    "infoEmpty": "Aucune entrée disponible",
+                    "infoFiltered": "(filtré de _MAX_ entrées au total)",
+                    "search": "Rechercher:",
+                    "paginate": {
+                        "first": "Premier",
+                        "last": "Dernier",
+                        "next": "Suivant",
+                        "previous": "Précédent"
+                    }
+                },
+                "initComplete": function() {
+                    $('div.dataTables_length select').addClass('form-select form-select-sm block w-full mt-1');
+                    $('div.dataTables_filter input').addClass('form-input form-input-sm block w-full mt-1');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -10,12 +10,12 @@
     {% tailwind_css %}
 </head>
 <body class="bg-gray-100">
-    <header class="bg-gray-200 text-red-400 px-2 p-4 w-full sticky top-0">
+    <header class="bg-blue-500 text-white px-2 p-4 w-full sticky top-0">
         <nav class="flex justify-between">
-            <div class="brand font-semibold text-2xl"><a href="{% url 'index' %}">Philia <span class="text-white bg-red-500 rounded p-2">shop</span></a></div>
+            <div class="brand font-semibold text-2xl"><a href="{% url 'index' %}">Philia <span class="text-white bg-black rounded p-2">shop</span></a></div>
             <ul class="space-x-3 font-thin text-xl">
-                <a class="hover:bg-red-500 hover:py-2 hover:rounded hover:text-white hover:px-2" href="{% url 'index' %}">Acceuil</a>
-                <a class="hover:bg-red-500 hover:py-2 hover:rounded hover:text-white hover:px-2" href="{% url 'catalogue' %}">Catalogue</a>
+                <a class="hover:bg-black hover:py-2 hover:rounded hover:text-white hover:px-2" href="{% url 'index' %}">Acceuil</a>
+                <a class="hover:bg-black hover:py-2 hover:rounded hover:text-white hover:px-2" href="{% url 'catalogue' %}">Catalogue</a>
             
                 {% if user.is_authenticated %}
                 <a href="{% url 'logout' %}">{{ user.username }}</a>
@@ -29,11 +29,14 @@
     
     <main class="mt-8 w-3/4 mx-auto">
 
-        <div class="font-thin  text-2xl">
-            <h1><a class="" href="{% url 'catalogue' %}">Voir le catalogue</a></h1>
-        </div>
+        <div class="flex justify-between">
+            <h2 class="font-bold text-2xl mb-4 text-blue-600">Effectuer une Vente pour {{ produit.designation }}</h2>
 
-        <h2 class="font-bold text-2xl mb-4">Enregistrer une Vente pour {{ produit.designation }}</h2>
+            <div class="font-thin  text-2xl">
+                <h1><a class="" href="{% url 'catalogue' %}">Voir le catalogue</a></h1>
+            </div>
+        </div>
+      
         {% if messages %}
         {% for message in messages %}
         <div class="message bg-green-800 text-white p-4 {{ message.tags }}">
@@ -63,7 +66,7 @@
                 <input type="text" name="numero_vente" value="{{ numero_vente }}" readonly class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
             <div class="flex items-center justify-between">
-                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Enregistrer</button>
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Valider</button>
             </div>
         </form>
     </main>

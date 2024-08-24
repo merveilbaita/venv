@@ -17,11 +17,11 @@
     }
 </style>
 <body>
-    <header class="bg-gray-100 text-red-400 px-2 p-4 w-full fixed z-10">
+    <header class="bg-blue-500 text-white px-2 p-4 w-full fixed z-10">
         <nav class="flex flex-wrap justify-between items-center">
             <!-- Brand -->
             <div class="brand font-semibold text-2xl mb-2 lg:mb-0">
-                <a href="{% url 'index' %}">Philia <span class="text-white bg-red-500 rounded p-2">shop</span></a>
+                <a href="{% url 'index' %}">Philia <span class="text-white bg-black rounded p-2">shop</span></a>
             </div>
             
             <!-- Search Bar -->
@@ -29,29 +29,30 @@
             
             <!-- Menu Button for Mobile -->
             <div class="lg:hidden">
-                <button id="menu-button" class="text-red-400 focus:outline-none">
+                <button id="menu-button" class="text-black focus:outline-none">
                     <i class="fas fa-bars"></i>
                 </button>
             </div>
             
             <!-- Navigation Links -->
             <ul id="menu" class="hidden lg:flex space-x-3 font-thin text-xl">
-                <li><a class="hover:bg-red-500 hover:py-2 hover:rounded hover:text-white bg-red-400 text-white px-2 py-2 rounded" href="{% url 'index' %}"><i class="fa-solid fa-house"></i></a></li>
-                <li><a class="hover:bg-red-500 hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'catalogue' %}">Catalogues</a></li>
+                <!-- <li><a class="hover:bg-red-500 hover:py-2 hover:rounded hover:text-white bg-red-400 text-white px-2 py-2 rounded" href="{% url 'index' %}"><i class="fa-solid fa-house"></i></a></li> -->
+                <li><a class="hover:bg-black hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'catalogue' %}">Catalogues</a></li>
+                {% if user.is_admin %}
+                <li><a class="hover:bg-black hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'admin_dash' %}"> <i class="fa-solid fa-user"></i> Dashboard</a></li>
+                {% endif %}
                 {% if user.is_authenticated %}
                 <li><a href="{% url 'logout' %}"><span>Bienvenue : </span> <i class="fa-regular fa-circle-user"></i> {{ user.username }}</a></li>
                 {% else %}
-                <li><a class="hover:bg-red-500 hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'login' %}">Login</a></li>
+                <li><a class="hover:bg-black hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'login' %}">Login</a></li>
                 {% endif %}
-                {% if user.is_admin %}
-                <li><a class="hover:bg-red-500 hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'admin_dash' %}"> <i class="fa-solid fa-user"></i> Dashboard</a></li>
-                {% endif %}
+                
             </ul>
         </nav>
         
         <!-- Mobile Menu -->
         <ul id="mobile-menu" class="lg:hidden hidden space-y-1 mt-2">
-            <li><a class="block hover:bg-red-500 hover:py-2 hover:rounded hover:text-white bg-red-400 text-white px-2 py-2 rounded" href="{% url 'index' %}"><i class="fa-solid fa-house"></i></a></li>
+            <li><a class="block hover:bg-black hover:py-2 hover:rounded hover:text-white bg-black text-white px-2 py-2 rounded" href="{% url 'index' %}"><i class="fa-solid fa-house"></i></a></li>
             <li><a class="block hover:bg-red-500 hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'catalogue' %}">Catalogues</a></li>
             {% if user.is_authenticated %}
             <li><a class="block hover:bg-red-500 hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'logout' %}"><span>Bienvenue : </span> <i class="fa-regular fa-circle-user"></i> {{ user.username }}</a></li>
@@ -66,15 +67,15 @@
     
     
 
-    <div class="h-96 w-full brand justify-center" style="background-image: url('/static/images/b.jpg')">
+    <div class="h-96 w-full brand justify-center" style="background-color: rgb(243, 244, 246);">
         <div class="p-4">
-            <p class="mt-20 text-white text-xl">Vivez une exprerience d'achat en ligne pas comme les autres</p>
+            <p class="mt-20 text-blue-400 font-thin text-xl">Vivez une exprerience d'achat en ligne exceptionnel</p>
             <div class="mt-10">
-                <a class="hover:bg-red-500 hover:py-2 text-gray-100 mt-10 hover:rounded hover:text-white hover:px-2 bg-red-400 rounded py-2 px-2" href="{% url 'catalogue' %}"> <i class="fa-solid fa-arrow-right"></i> Voir plus des produits</a>
+                <a class="hover:bg-black hover:py-2 text-gray-100 mt-10 hover:rounded hover:text-white hover:px-2 bg-blue-500 rounded py-2 px-2" href="{% url 'catalogue' %}"> <i class="fa-solid fa-arrow-right"></i> Voir plus des produits</a>
             </div>
         </div>
     </div>   
-    <div class="font-bold justify-center items-center text-red-400 text-2xl mt-5">
+    <div class="font-bold justify-center items-center text-blue-600 text-2xl mt-5">
         <h1 class="text-center"><span class="border-b-2">Nos meuilleurs</span> vente</h1>
     </div>
     <div class="flex justify-center space-x-8 flex-wrap mt-5 mb-10">
@@ -94,9 +95,9 @@
                     {% endif %}
                     <div class="mt-4">
                         {% if produit.disponible %}
-                        <a class="inline-block bg-red-500 text-white text-center py-2 px-4 rounded hover:bg-red-600 transition duration-200" href="{% url 'detail' produit.slug %}"> <i class="fa-solid fa-cart-plus"></i> Acheter</a>
+                        <a class="inline-block bg-blue-500 text-white text-center py-2 px-4 rounded hover:bg-black transition duration-200" href="{% url 'detail' produit.slug %}"> <i class="fa-solid fa-cart-plus"></i> Acheter</a>
                         {% else %}
-                        <button disabled class="inline-block bg-red-500 text-white text-center py-2 px-4 rounded transition duration-200 cursor-not-allowed opacity-50"> <i class="fa-solid fa-cart-plus"></i> Acheter</button>
+                        <button disabled class="inline-block bg-blue-500 text-white text-center py-2 px-4 rounded transition duration-200 cursor-not-allowed opacity-50"> <i class="fa-solid fa-cart-plus"></i> Acheter</button>
                         {% endif %}
                     </div>
                 </div>

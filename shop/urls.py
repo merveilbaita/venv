@@ -19,5 +19,6 @@ urlpatterns = [
     path('regle/', privacy_policy, name='regle'),
     path('enregistrer-vente/<int:produit_id>/', enregistrer_vente, name='enregistrer_vente'),
     path('facture/<int:vente_id>/', facture_vente, name='facture_vente'),
+    path('ventes-du-jour/', ventes_du_jour, name='ventes_du_jour'),
     
 ]

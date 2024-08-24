@@ -10,50 +10,54 @@
     {% tailwind_css %}
 </head>
 <body class="bg-gray-100">
-    <header class="bg-gray-200 text-red-400 px-4 py-4 w-full sticky top-0">
+    <header class="bg-blue-500 text-white px-4 py-4 w-full sticky top-0">
         <nav class="flex items-center justify-between flex-wrap">
             <div class="brand font-semibold text-2xl">
-                <a href="{% url 'index' %}">Philia <span class="text-white bg-red-500 rounded p-2">shop</span></a>
+                <a href="{% url 'index' %}">Philia <span class="text-white bg-black rounded p-2">shop</span></a>
             </div>
             <button id="menu-button" class="lg:hidden px-2 py-1 text-red-400 focus:outline-none">
                 <i class="fas fa-bars"></i>
             </button>
             <ul id="menu" class="hidden lg:flex space-x-3 font-thin text-xl">
-                <li><a class="hover:bg-red-500 hover:py-2 hover:rounded hover:text-white px-2 py-2 rounded" href="{% url 'index' %}"><i class="fa-solid fa-house"></i></a></li>
-                <li><a class="hover:bg-red-500 hover:py-2 hover:rounded hover:text-white px-2 py-2 bg-red-400 text-white rounded" href="{% url 'catalogue' %}">Catalogue</a></li>
+                <li><a class="hover:bg-black hover:py-2 hover:rounded hover:text-white px-2 py-2 rounded" href="{% url 'index' %}"><i class="fa-solid fa-house"></i></a></li>
+                <li><a class="hover:bg-black hover:py-2 hover:rounded hover:text-white px-2 py-2 bg-black text-white rounded" href="{% url 'catalogue' %}">Catalogue</a></li>
                 {% if user.is_authenticated %}
-                <li><a class="hover:bg-red-500 hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'logout' %}"><i class="fa-regular fa-circle-user"></i> {{ user.username }}</a></li>
+                <li><a class="hover:bg-black hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'logout' %}"><i class="fa-regular fa-circle-user"></i> {{ user.username }}</a></li>
                 {% else %}
-                <li><a class="hover:bg-red-500 hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'login' %}">Users</a></li>
+                <li><a class="hover:bg-black hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'login' %}">Users</a></li>
                 {% endif %}
     
             </ul>
-            <div class="flex-grow mx-4 mt-4 mb-2 lg:mb-0">
-                <form action="" method="GET" class="flex items-center">
-                    <input type="text" name="q" class="w-full px-4 py-2 rounded-md border border-red-400 focus:outline-none focus:ring-2 focus:ring-red-400" placeholder="Recherche...">
-                    <button type="submit" class="bg-red-500 text-white ml-4 px-4 py-2 rounded-r-md border border-red-500">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </form>
-            </div>
+          
         </nav>
         <ul id="mobile-menu" class="lg:hidden hidden mt-2 space-y-2">
             <li><a class="block hover:bg-red-500 hover:py-2 hover:rounded hover:text-white px-2 py-2 rounded" href="{% url 'index' %}"><i class="fa-solid fa-house"></i></a></li>
             <li><a class="block hover:bg-red-500 hover:py-2 hover:rounded hover:text-white px-2 py-2 bg-red-400 text-white rounded" href="{% url 'catalogue' %}">Catalogue</a></li>
             {% if user.is_authenticated %}
-            <li><a class="block hover:bg-red-500 hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'logout' %}"><i class="fa-regular fa-circle-user"></i> {{ user.username }}</a></li>
+            <li><a class="block hover:bg-black hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'logout' %}"><i class="fa-regular fa-circle-user"></i> {{ user.username }}</a></li>
             {% else %}
             <li><a class="block hover:bg-red-500 hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'login' %}">Users</a></li>
             {% endif %}
         </ul>
     </header>
  
-
     <main class="mt-4 px-4">
-        <h1 class="font-bold text-2xl">Catalogue de nos produits</h1>
+        <div class="flex justify-between">
+            <h1 class="font-bold text-2xl">Catalogue de nos produits</h1>
+            <div>
+                <form action="" method="GET" class="flex items-center">
+                    <input type="text" name="q" class="w-3/4 px-4 py-2 rounded-md border border-black focus:outline-none focus:ring-2 focus:ring-black" placeholder="Recherche...">
+                    <button type="submit" class="bg-blue-500 text-white ml-4 px-4 py-2 rounded-r-md border border-blue-500">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+    
 
         <!-- Smartphones -->
-        <section class="mt-4">
+        <section class="mt-4 container">
             <h2 class="font-semibold text-xl border-b-2 pb-2">Smartphones</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-4">
                 {% for produit in produit_smartphone %}
@@ -72,9 +76,9 @@
                         {% endif %}
                         <div class="mt-4">
                             {% if produit.disponible %}
-                            <a class="inline-block bg-red-500 text-white text-center py-2 px-4 rounded hover:bg-red-600 transition duration-200" href="{% url 'detail' produit.slug %}"><i class="fa-solid fa-arrow-right"></i> Voir plus</a>
+                            <a class="inline-block bg-blue-500 text-white text-center py-2 px-4 rounded hover:bg-black transition duration-200" href="{% url 'detail' produit.slug %}"><i class="fa-solid fa-arrow-right"></i> Voir plus</a>
                             {% if user.is_admin %}
-                            <a class="inline-block bg-blue-500 text-white text-center py-2 px-4 rounded hover:bg-blue-600 transition duration-200 mt-2" href="{% url 'enregistrer_vente' produit.id %}">Vendre</a>
+                            <a class="inline-block bg-blue-500 text-white text-center py-2 px-4 rounded hover:bg-black transition duration-200 mt-2" href="{% url 'enregistrer_vente' produit.id %}">Vendre</a>
                             {% endif %}
                             {% else %}
                             <button disabled class="inline-block bg-red-500 text-white text-center py-2 px-4 rounded cursor-not-allowed opacity-50">Voir plus</button>
@@ -106,9 +110,9 @@
                         {% endif %}
                         <div class="mt-4">
                             {% if produit.disponible %}
-                            <a class="inline-block bg-red-500 text-white text-center py-2 px-4 rounded hover:bg-red-600 transition duration-200" href="{% url 'detail' produit.slug %}"><i class="fa-solid fa-arrow-right"></i> Voir plus</a>
+                            <a class="inline-block bg-blue-500 text-white text-center py-2 px-4 rounded hover:bg-black transition duration-200" href="{% url 'detail' produit.slug %}"><i class="fa-solid fa-arrow-right"></i> Voir plus</a>
                             {% if user.is_admin %}
-                            <a class="inline-block bg-blue-500 text-white text-center py-2 px-4 rounded hover:bg-blue-600 transition duration-200 mt-2" href="{% url 'enregistrer_vente' produit.id %}">Vendre</a>
+                            <a class="inline-block bg-blue-500 text-white text-center py-2 px-4 rounded hover:bg-black transition duration-200 mt-2" href="{% url 'enregistrer_vente' produit.id %}">Vendre</a>
                             {% endif %}
                             {% else %}
                             <button disabled class="inline-block bg-red-500 text-white text-center py-2 px-4 rounded cursor-not-allowed opacity-50">Voir plus</button>
@@ -140,9 +144,9 @@
                         {% endif %}
                         <div class="mt-4">
                             {% if produit.disponible %}
-                            <a class="inline-block bg-red-500 text-white text-center py-2 px-4 rounded hover:bg-red-600 transition duration-200" href="{% url 'detail' produit.slug %}"><i class="fa-solid fa-arrow-right"></i> Voir plus</a>
+                            <a class="inline-block bg-blue-500 text-white text-center py-2 px-4 rounded hover:bg-black transition duration-200" href="{% url 'detail' produit.slug %}"><i class="fa-solid fa-arrow-right"></i> Voir plus</a>
                             {% if user.is_admin %}
-                            <a class="inline-block bg-blue-500 text-white text-center py-2 px-4 rounded hover:bg-blue-600 transition duration-200 mt-2" href="{% url 'enregistrer_vente' produit.id %}">Vendre</a>
+                            <a class="inline-block bg-blue-500 text-white text-center py-2 px-4 rounded hover:bg-black transition duration-200 mt-2" href="{% url 'enregistrer_vente' produit.id %}">Vendre</a>
                             {% endif %}
                             {% else %}
                             <button disabled class="inline-block bg-red-500 text-white text-center py-2 px-4 rounded cursor-not-allowed opacity-50">Voir plus</button>

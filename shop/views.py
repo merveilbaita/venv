@@ -1,3 +1,4 @@
+import datetime
 from django.contrib import messages
 from django.forms import ValidationError
 from django.http import JsonResponse
@@ -10,6 +11,9 @@ from django.db import transaction
 from django.db.models import F
 import uuid
 from django.utils.text import slugify
+from django.db.models import Sum
+from datetime import datetime
+
 
 
 from shop.models import Produit , Categorie, Cart, Order
@@ -251,3 +255,18 @@ def enregistrer_vente(request, produit_id):
 def facture_vente(request, vente_id):
     vente = get_object_or_404(Vente, id=vente_id)
     return render(request, 'facture.html', context={'vente': vente})
+
+def ventes_du_jour(request):
+    today = timezone.localdate()  # Date locale du jour
+    start_of_day = timezone.make_aware(datetime.combine(today, datetime.min.time()))
+    end_of_day = timezone.make_aware(datetime.combine(today, datetime.max.time()))
+
+    ventes = Vente.objects.filter(date_vente__range=(start_of_day, end_of_day))
+    total_vendu = ventes.aggregate(total=Sum('total'))['total'] or 0
+
+    context = {
+        'ventes': ventes,
+        'today': today,
+        'total_vendu': total_vendu,
+    }
+    return render(request, 'ventes_du_jour.html', context)
