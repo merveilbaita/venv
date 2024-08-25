@@ -10,12 +10,13 @@
     {% tailwind_css %}
 </head>
 <body class="bg-gray-100">
+ 
     <header class="bg-blue-500 text-white px-4 py-4 w-full sticky top-0">
         <nav class="flex items-center justify-between flex-wrap">
             <div class="brand font-semibold text-2xl">
                 <a href="{% url 'index' %}">Philia <span class="text-white bg-black rounded p-2">shop</span></a>
             </div>
-            <button id="menu-button" class="lg:hidden px-2 py-1 text-red-400 focus:outline-none">
+            <button id="menu-button" class="lg:hidden px-2 py-1 text-black focus:outline-none">
                 <i class="fas fa-bars"></i>
             </button>
             <ul id="menu" class="hidden lg:flex space-x-3 font-thin text-xl">
@@ -26,28 +27,17 @@
                 {% else %}
                 <li><a class="hover:bg-black hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'login' %}">Users</a></li>
                 {% endif %}
-    
             </ul>
-          
         </nav>
-        <ul id="mobile-menu" class="lg:hidden hidden mt-2 space-y-2">
-            <li><a class="block hover:bg-red-500 hover:py-2 hover:rounded hover:text-white px-2 py-2 rounded" href="{% url 'index' %}"><i class="fa-solid fa-house"></i></a></li>
-            <li><a class="block hover:bg-red-500 hover:py-2 hover:rounded hover:text-white px-2 py-2 bg-red-400 text-white rounded" href="{% url 'catalogue' %}">Catalogue</a></li>
-            {% if user.is_authenticated %}
-            <li><a class="block hover:bg-black hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'logout' %}"><i class="fa-regular fa-circle-user"></i> {{ user.username }}</a></li>
-            {% else %}
-            <li><a class="block hover:bg-red-500 hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'login' %}">Users</a></li>
-            {% endif %}
-        </ul>
     </header>
  
-    <main class="mt-4 px-4">
-        <div class="flex justify-between">
-            <h1 class="font-bold text-2xl">Catalogue de nos produits</h1>
-            <div>
-                <form action="" method="GET" class="flex items-center">
-                    <input type="text" name="q" class="w-3/4 px-4 py-2 rounded-md border border-black focus:outline-none focus:ring-2 focus:ring-black" placeholder="Recherche...">
-                    <button type="submit" class="bg-blue-500 text-white ml-4 px-4 py-2 rounded-r-md border border-blue-500">
+    <main class="mt-4 px-4 w-full sm:w-5/6 mx-auto">
+        <div class="flex flex-col sm:flex-row justify-between">
+            <h1 class="font-bold text-xl sm:text-2xl">Catalogue de nos produits</h1>
+            <div class="mt-4 sm:mt-0">
+                <form action="" method="GET" class="flex flex-col sm:flex-row items-center">
+                    <input type="text" name="q" class="w-full sm:w-3/4 px-4 py-2 rounded-md border border-black focus:outline-none focus:ring-2 focus:ring-black" placeholder="Recherche...">
+                    <button type="submit" class="bg-blue-500 text-white mt-2 sm:mt-0 sm:ml-4 px-4 py-2 rounded-md border border-blue-500">
                         <i class="fas fa-search"></i>
                     </button>
                 </form>
@@ -55,10 +45,11 @@
         </div>
     </main>
     
+    
 
         <!-- Smartphones -->
-        <section class="mt-4 container">
-            <h2 class="font-semibold text-xl border-b-2 pb-2">Smartphones</h2>
+        <section class="mt-4 mx-auto w-5/6">
+            <h2 class="font-semibold text-1xl border-b-2 pb-2">Smartphones</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-4">
                 {% for produit in produit_smartphone %}
                 <div class="border rounded-lg shadow-lg bg-white overflow-hidden">
@@ -91,8 +82,8 @@
         </section>
 
         <!-- Ordinateurs -->
-        <section class="mt-4">
-            <h2 class="font-semibold text-xl border-b-2 pb-2">Ordinateurs</h2>
+        <section class="mt-4 w-5/6 mx-auto">
+            <h2 class="font-semibold text-1xl border-b-2 pb-2">Ordinateurs</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-4">
                 {% for produit in produit_ordinateur %}
                 <div class="border rounded-lg shadow-lg bg-white overflow-hidden">
@@ -125,13 +116,13 @@
         </section>
 
         <!-- Accessoires -->
-        <section class="mt-4">
-            <h2 class="font-semibold text-xl border-b-2 pb-2">Accessoires</h2>
+        <section class="mt-4 w-5/6 mx-auto">
+            <h2 class="font-semibold text-1xl border-b-2 pb-2">Accessoires</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-4">
                 {% for produit in produit_accessoires %}
                 <div class="border rounded-lg shadow-lg bg-white overflow-hidden">
                     {% if produit.image_produit %}
-                    <img class="w-full h-48 sm:h-56 md:h-64 lg:h-72 object-cover" src="{{ produit.image_produit.url }}" alt="Image de {{ produit.designation }}">
+                    <img class="w-full h-48 sm:h-56 md:h-64 lg:h-72 object-fill" src="{{ produit.image_produit.url }}" alt="Image de {{ produit.designation }}">
                     {% endif %}
                     <div class="p-4">
                         <h3 class="text-sm font-bold mb-2">{{ produit.designation }}</h3>
@@ -173,5 +164,7 @@
             mobileMenu.classList.toggle('hidden');
         });
     </script>
+
+
 </body>
 </html>
