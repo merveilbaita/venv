@@ -6,7 +6,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required, user_passes_test
-from .models import ShippingAddress, Vente
+from .models import LigneVente, ShippingAddress, Vente
 from django.db import transaction
 from django.db.models import F
 import uuid
@@ -221,40 +221,62 @@ def privacy_policy(request):
     return render(request, 'privacy_policy.html', context)
 
 
+
+
+
 @login_required
-def enregistrer_vente(request, produit_id):
+def ajouter_produit_vente(request, produit_id):
     produit = get_object_or_404(Produit, id=produit_id)
+    vente_id = request.session.get('vente_id')
+
+    if not vente_id:
+        vente = Vente.objects.create(vendeur=request.user, type_vente='en boutique')
+        request.session['vente_id'] = vente.id
+    else:
+        vente = get_object_or_404(Vente, id=vente_id)
+
     if request.method == 'POST':
         quantite = int(request.POST.get('quantite'))
-        type_vente = request.POST.get('type_vente')
-        prix_unitaire = produit.prix
-        nom_client = request.POST.get('nom_client')
-        numero_vente = slugify(str(uuid.uuid4()))[:20]  # Génère un identifiant unique
+        LigneVente.objects.create(
+            vente=vente,
+            produit=produit,
+            quantite=quantite,
+            prix_unitaire=produit.prix,
+        )
+        messages.success(request, "Produit ajouté à la vente.")
+        return redirect('catalogue')   # Redirige vers le catalogue pour ajouter d'autres produits
 
-        try:
-            produit.update_stock(quantite)  # Assurez-vous que ceci fonctionne comme prévu
-            vente = Vente.objects.create(
-                produit=produit,
-                quantite=quantite,
-                type_vente=type_vente,
-                prix_unitaire=prix_unitaire,
-                vendeur=request.user,
-                nom_client=nom_client,
-                numero_vente=numero_vente,
-            )
-            messages.success(request, "La vente a été enregistrée avec succès.")
-            return redirect(reverse('facture_vente', kwargs={'vente_id': vente.id}))  # Redirection vers la facture
-
-        except ValueError as e:
-            messages.error(request, str(e))
-
-    return render(request, 'enregistrer_vente.html', context={'produit': produit})
+    return render(request, 'ajouter_produit_vente.html', {'produit': produit})
 
 
 @login_required
 def facture_vente(request, vente_id):
     vente = get_object_or_404(Vente, id=vente_id)
     return render(request, 'facture.html', context={'vente': vente})
+
+
+@login_required
+def voir_facture(request):
+    vente_id = request.session.get('vente_id')
+    if not vente_id:
+        messages.error(request, "Aucune vente en cours.")
+        return redirect('catalogue')
+
+    vente = get_object_or_404(Vente, id=vente_id)
+    
+    if request.method == 'POST':
+        # Finaliser la vente, comme enregistrer la date, nom du client, etc.
+        vente.nom_client = request.POST.get('nom_client')
+        vente.save()
+        # Nettoyer la session
+        del request.session['vente_id']
+        messages.success(request, "Vente finalisée avec succès.")
+        return redirect(reverse('facture_vente', kwargs={'vente_id': vente.id}))
+
+    return render(request, 'voir_facture.html', {'vente': vente})
+
+
+
 
 def ventes_du_jour(request):
     today = timezone.localdate()  # Date locale du jour

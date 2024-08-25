@@ -1,0 +1,86 @@
+{% load static tailwind_tags %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter produit vente</title>
+    {% tailwind_css %}
+</head>
+<body>
+
+    <header class="bg-blue-500 text-white px-2 p-4 w-full sticky top-0">
+        <nav class="flex flex-wrap justify-between items-center">
+            <!-- Brand -->
+            <div class="brand font-semibold text-2xl mb-2 lg:mb-0">
+                <a href="{% url 'index' %}">Philia <span class="text-white bg-black rounded p-2">shop</span></a>
+            </div>
+            
+            <!-- Search Bar -->
+         
+            
+            <!-- Menu Button for Mobile -->
+            <div class="lg:hidden">
+                <button id="menu-button" class="text-black focus:outline-none">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <!-- Navigation Links -->
+            <ul id="menu" class="hidden lg:flex space-x-3 font-thin text-xl">
+                <!-- <li><a class="hover:bg-red-500 hover:py-2 hover:rounded hover:text-white bg-red-400 text-white px-2 py-2 rounded" href="{% url 'index' %}"><i class="fa-solid fa-house"></i></a></li> -->
+                <li><a class="hover:bg-black hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'catalogue' %}">Catalogues</a></li>
+                {% if user.is_admin %}
+                <li><a class="hover:bg-black hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'admin_dash' %}"> <i class="fa-solid fa-user"></i> Dashboard</a></li>
+                {% endif %}
+                {% if user.is_authenticated %}
+                <li><a href="{% url 'logout' %}"><span>Bienvenue : </span> <i class="fa-regular fa-circle-user"></i> {{ user.username }}</a></li>
+                {% else %}
+                <li><a class="hover:bg-black hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'login' %}">Login</a></li>
+                {% endif %}
+                
+            </ul>
+        </nav>
+        
+        <!-- Mobile Menu -->
+        <ul id="mobile-menu" class="lg:hidden hidden space-y-1 mt-2">
+            <li><a class="block hover:bg-black hover:py-2 hover:rounded hover:text-white bg-black text-white px-2 py-2 rounded" href="{% url 'index' %}"><i class="fa-solid fa-house"></i></a></li>
+            <li><a class="block hover:bg-red-500 hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'catalogue' %}">Catalogues</a></li>
+            {% if user.is_authenticated %}
+            <li><a class="block hover:bg-red-500 hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'logout' %}"><span>Bienvenue : </span> <i class="fa-regular fa-circle-user"></i> {{ user.username }}</a></li>
+            {% else %}
+            <li><a class="block hover:bg-red-500 hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'login' %}">Login</a></li>
+            {% endif %}
+            {% if user.is_admin %}
+            <li><a class="block hover:bg-red-500 hover:py-2 hover:rounded hover:text-white px-2 py-2" href="{% url 'admin_dash' %}"> <i class="fa-solid fa-truck-fast"></i> Dashboard</a></li>
+            {% endif %}
+        </ul>
+    </header>
+    
+    
+
+
+    <main class="mt-8 w-1/2 mx-auto vente mb-10">
+        <h2 class="font-bold text-2xl mb-4 text-blue-600">Ajouter {{ produit.designation }} à la vente</h2>
+        
+        <form method="post" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            {% csrf_token %}
+            <div class="mb-4">
+                <label for="quantite" class="block text-gray-700 text-sm font-bold mb-2">Quantité :</label>
+                <input type="number" name="quantite" min="1" value="1" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+           <div class="flex justify-between">
+           <div>
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Ajouter à la facture</button>
+           </div>
+            <div class="mt-2">
+                <h1><a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4  rounded focus:outline-none focus:shadow-outline" href="{% url 'voir_facture' %}"><i class="fa-solid fa-cart-shopping"></i>  Voir la facture</a></h1>
+            </div>
+           </div>
+        </form>
+    </main>
+    
+    
+</body>
+</html>

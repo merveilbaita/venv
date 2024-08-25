@@ -10,7 +10,7 @@
     {% tailwind_css %}
 </head>
 <body class="bg-gray-100">
- 
+
     <header class="bg-blue-500 text-white px-4 py-4 w-full sticky top-0">
         <nav class="flex items-center justify-between flex-wrap">
             <div class="brand font-semibold text-2xl">
@@ -30,7 +30,7 @@
             </ul>
         </nav>
     </header>
- 
+
     <main class="mt-4 px-4 w-full sm:w-5/6 mx-auto">
         <div class="flex flex-col sm:flex-row justify-between">
             <h1 class="font-bold text-xl sm:text-2xl">Catalogue de nos produits</h1>
@@ -44,127 +44,104 @@
             </div>
         </div>
     </main>
-    
-    
 
-        <!-- Smartphones -->
-        <section class="mt-4 mx-auto w-5/6">
-            <h2 class="font-semibold text-1xl border-b-2 pb-2">Smartphones</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-4">
-                {% for produit in produit_smartphone %}
-                <div class="border rounded-lg shadow-lg bg-white overflow-hidden">
-                    {% if produit.image_produit %}
-                    <img class="w-full h-48 sm:h-56 md:h-64 lg:h-72 object-fill" src="{{ produit.image_produit.url }}" alt="Image de {{ produit.designation }}">
-                    {% endif %}
-                    <div class="p-4">
-                        <h3 class="text-sm font-bold mb-2">{{ produit.designation }}</h3>
-                        <p class="text-lg font-semibold text-gray-800">{{ produit.prix }} $</p>
-                        <p class="text-lg font-semibold text-gray-800">{{ produit.qte }} En stock</p>
-                        {% if produit.disponible %}
-                        <p class="text-green-600 font-semibold">Disponible</p>
-                        {% else %}
-                        <p class="text-red-600 font-semibold">Indisponible</p>
+    <!-- Smartphones -->
+    <section class="mt-4 mx-auto w-5/6">
+        <h2 class="font-semibold text-1xl border-b-2 pb-2">Smartphones</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-4">
+            {% for produit in produit_smartphone %}
+            <div class="border rounded-lg shadow-lg bg-white overflow-hidden">
+                {% if produit.image_produit %}
+                <img class="w-full h-48 sm:h-56 md:h-64 lg:h-72 object-fill" src="{{ produit.image_produit.url }}" alt="Image de {{ produit.designation }}">
+                {% endif %}
+                <div class="p-4">
+                    <h3 class="text-sm font-bold mb-2">{{ produit.designation }}</h3>
+                    <p class="text-lg font-semibold text-gray-800">{{ produit.prix }} $</p>
+                    <p class="text-lg font-semibold text-gray-800">{{ produit.qte }} En stock</p>
+                    {% if produit.disponible %}
+                    <p class="text-green-600 font-semibold">Disponible</p>
+                    <div class="mt-4">
+                        <a class="inline-block bg-blue-500 text-white text-center py-2 px-4 rounded hover:bg-black transition duration-200" href="{% url 'detail' produit.slug %}"><i class="fa-solid fa-arrow-right"></i> Voir plus</a>
+                       
+                        {% if user.is_admin %}
+                        <a class="inline-block bg-blue-500 text-white text-center py-2 px-4 rounded hover:bg-black transition duration-200 mt-2" href="{% url 'ajouter_produit_vente' produit.id %}">Ajouter à la vente</a>
                         {% endif %}
-                        <div class="mt-4">
-                            {% if produit.disponible %}
-                            <a class="inline-block bg-blue-500 text-white text-center py-2 px-4 rounded hover:bg-black transition duration-200" href="{% url 'detail' produit.slug %}"><i class="fa-solid fa-arrow-right"></i> Voir plus</a>
-                            {% if user.is_admin %}
-                            <a class="inline-block bg-blue-500 text-white text-center py-2 px-4 rounded hover:bg-black transition duration-200 mt-2" href="{% url 'enregistrer_vente' produit.id %}">Vendre</a>
-                            {% endif %}
-                            {% else %}
-                            <button disabled class="inline-block bg-red-500 text-white text-center py-2 px-4 rounded cursor-not-allowed opacity-50">Voir plus</button>
-                            {% endif %}
-                        </div>
                     </div>
-                </div>
-                {% endfor %}
-            </div>
-        </section>
-
-        <!-- Ordinateurs -->
-        <section class="mt-4 w-5/6 mx-auto">
-            <h2 class="font-semibold text-1xl border-b-2 pb-2">Ordinateurs</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-4">
-                {% for produit in produit_ordinateur %}
-                <div class="border rounded-lg shadow-lg bg-white overflow-hidden">
-                    {% if produit.image_produit %}
-                    <img class="w-full h-48 sm:h-56 md:h-64 lg:h-72 object-cover" src="{{ produit.image_produit.url }}" alt="Image de {{ produit.designation }}">
+                    {% else %}
+                    <button disabled class="inline-block bg-red-500 text-white text-center py-2 px-4 rounded cursor-not-allowed opacity-50">Voir plus</button>
                     {% endif %}
-                    <div class="p-4">
-                        <h3 class="text-sm font-bold mb-2">{{ produit.designation }}</h3>
-                        <p class="text-lg font-semibold text-gray-800">{{ produit.prix }} $</p>
-                        <p class="text-lg font-semibold text-gray-800">{{ produit.qte }} En stock</p>
-                        {% if produit.disponible %}
-                        <p class="text-green-600 font-semibold">Disponible</p>
-                        {% else %}
-                        <p class="text-red-600 font-semibold">Indisponible</p>
-                        {% endif %}
-                        <div class="mt-4">
-                            {% if produit.disponible %}
-                            <a class="inline-block bg-blue-500 text-white text-center py-2 px-4 rounded hover:bg-black transition duration-200" href="{% url 'detail' produit.slug %}"><i class="fa-solid fa-arrow-right"></i> Voir plus</a>
-                            {% if user.is_admin %}
-                            <a class="inline-block bg-blue-500 text-white text-center py-2 px-4 rounded hover:bg-black transition duration-200 mt-2" href="{% url 'enregistrer_vente' produit.id %}">Vendre</a>
-                            {% endif %}
-                            {% else %}
-                            <button disabled class="inline-block bg-red-500 text-white text-center py-2 px-4 rounded cursor-not-allowed opacity-50">Voir plus</button>
-                            {% endif %}
-                        </div>
-                    </div>
                 </div>
-                {% endfor %}
             </div>
-        </section>
+            {% endfor %}
+        </div>
+    </section>
 
-        <!-- Accessoires -->
-        <section class="mt-4 w-5/6 mx-auto">
-            <h2 class="font-semibold text-1xl border-b-2 pb-2">Accessoires</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-4">
-                {% for produit in produit_accessoires %}
-                <div class="border rounded-lg shadow-lg bg-white overflow-hidden">
-                    {% if produit.image_produit %}
-                    <img class="w-full h-48 sm:h-56 md:h-64 lg:h-72 object-fill" src="{{ produit.image_produit.url }}" alt="Image de {{ produit.designation }}">
+    <!-- Ordinateurs -->
+    <section class="mt-4 w-5/6 mx-auto">
+        <h2 class="font-semibold text-1xl border-b-2 pb-2">Ordinateurs</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-4">
+            {% for produit in produit_ordinateur %}
+            <div class="border rounded-lg shadow-lg bg-white overflow-hidden">
+                {% if produit.image_produit %}
+                <img class="w-full h-48 sm:h-56 md:h-64 lg:h-72 object-cover" src="{{ produit.image_produit.url }}" alt="Image de {{ produit.designation }}">
+                {% endif %}
+                <div class="p-4">
+                    <h3 class="text-sm font-bold mb-2">{{ produit.designation }}</h3>
+                    <p class="text-lg font-semibold text-gray-800">{{ produit.prix }} $</p>
+                    <p class="text-lg font-semibold text-gray-800">{{ produit.qte }} En stock</p>
+                    {% if produit.disponible %}
+                    <p class="text-green-600 font-semibold">Disponible</p>
+                    <div class="mt-4">
+                        <a class="inline-block bg-blue-500 text-white text-center py-2 px-4 rounded hover:bg-black transition duration-200" href="{% url 'detail' produit.slug %}"><i class="fa-solid fa-arrow-right"></i> Voir plus</a>
+                       
+                        {% if user.is_admin %}
+                        <a class="inline-block bg-blue-500 text-white text-center py-2 px-4 rounded hover:bg-black transition duration-200 mt-2" href="{% url 'ajouter_produit_vente' produit.id %}">Ajouter à la vente</a>
+                        {% endif %}
+                    </div>
+                    {% else %}
+                    <button disabled class="inline-block bg-red-500 text-white text-center py-2 px-4 rounded cursor-not-allowed opacity-50">Voir plus</button>
                     {% endif %}
-                    <div class="p-4">
-                        <h3 class="text-sm font-bold mb-2">{{ produit.designation }}</h3>
-                        <p class="text-lg font-semibold text-gray-800">{{ produit.prix }} $</p>
-                        <p class="text-lg font-semibold text-gray-800">{{ produit.qte }} En stock</p>
-                        {% if produit.disponible %}
-                        <p class="text-green-600 font-semibold">Disponible</p>
-                        {% else %}
-                        <p class="text-red-600 font-semibold">Indisponible</p>
-                        {% endif %}
-                        <div class="mt-4">
-                            {% if produit.disponible %}
-                            <a class="inline-block bg-blue-500 text-white text-center py-2 px-4 rounded hover:bg-black transition duration-200" href="{% url 'detail' produit.slug %}"><i class="fa-solid fa-arrow-right"></i> Voir plus</a>
-                            {% if user.is_admin %}
-                            <a class="inline-block bg-blue-500 text-white text-center py-2 px-4 rounded hover:bg-black transition duration-200 mt-2" href="{% url 'enregistrer_vente' produit.id %}">Vendre</a>
-                            {% endif %}
-                            {% else %}
-                            <button disabled class="inline-block bg-red-500 text-white text-center py-2 px-4 rounded cursor-not-allowed opacity-50">Voir plus</button>
-                            {% endif %}
-                        </div>
-                    </div>
                 </div>
-                {% endfor %}
             </div>
-        </section>
-    </main>
+            {% endfor %}
+        </div>
+    </section>
 
-    <footer class="bg-gray-200 text-center py-4 mt-4">
-        <p>&copy; 2023 Philia Shop. Tous droits réservés.</p>
-    </footer>
-    
+    <!-- Accessoires -->
+    <section class="mt-4 w-5/6 mx-auto">
+        <h2 class="font-semibold text-1xl border-b-2 pb-2">Accessoires</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-4">
+            {% for produit in produit_accessoires %}
+            <div class="border rounded-lg shadow-lg bg-white overflow-hidden">
+                {% if produit.image_produit %}
+                <img class="w-full h-48 sm:h-56 md:h-64 lg:h-72 object-cover" src="{{ produit.image_produit.url }}" alt="Image de {{ produit.designation }}">
+                {% endif %}
+                <div class="p-4">
+                    <h3 class="text-sm font-bold mb-2">{{ produit.designation }}</h3>
+                    <p class="text-lg font-semibold text-gray-800">{{ produit.prix }} $</p>
+                    <p class="text-lg font-semibold text-gray-800">{{ produit.qte }} En stock</p>
+                    {% if produit.disponible %}
+                    <p class="text-green-600 font-semibold">Disponible</p>
+                    <div class="mt-4">
+                        <a class="inline-block bg-blue-500 text-white text-center py-2 px-4 rounded hover:bg-black transition duration-200" href="{% url 'detail' produit.slug %}"><i class="fa-solid fa-arrow-right"></i> Voir plus</a>
+                        
+                        {% if user.is_admin %}
+                        <a class="inline-block bg-blue-500 text-white text-center py-2 px-4 rounded hover:bg-black transition duration-200 mt-2" href="{% url 'ajouter_produit_vente' produit.id %}">Ajouter à la vente</a>
+                        {% endif %}
+                    </div>
+                    {% else %}
+                    <button disabled class="inline-block bg-red-500 text-white text-center py-2 px-4 rounded cursor-not-allowed opacity-50">Voir plus</button>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
     <script>
-        const menuButton = document.getElementById('menu-button');
-        const menu = document.getElementById('menu');
-        const mobileMenu = document.getElementById('mobile-menu');
-
-        menuButton.addEventListener('click', () => {
-            menu.classList.toggle('hidden');
-            mobileMenu.classList.toggle('hidden');
+        document.getElementById("menu-button").addEventListener("click", function() {
+            document.getElementById("menu").classList.toggle("hidden");
         });
     </script>
-
-
 </body>
 </html>

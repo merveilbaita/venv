@@ -17,8 +17,10 @@ urlpatterns = [
     path('ord/orders/delete/<int:order_id>/', delete_order, name='delete_order'),
     path('adr', adress, name='adress'),
     path('regle/', privacy_policy, name='regle'),
-    path('enregistrer-vente/<int:produit_id>/', enregistrer_vente, name='enregistrer_vente'),
+    path('ajouter-produit-vente/<int:produit_id>/', ajouter_produit_vente, name='ajouter_produit_vente'),
+    path('voir-facture/', voir_facture, name='voir_facture'),
     path('facture/<int:vente_id>/', facture_vente, name='facture_vente'),
     path('ventes-du-jour/', ventes_du_jour, name='ventes_du_jour'),
+
     
 ]

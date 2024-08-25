@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db import models
 from django.forms import ValidationError
 from django.utils import timezone
+import uuid
 
 class Categorie(models.Model):
     nom = models.CharField(max_length=120)
@@ -61,24 +62,29 @@ class Vente(models.Model):
         ('en ligne', 'En Ligne'),
         ('en boutique', 'En Boutique'),
     )
-    produit = models.ForeignKey(Produit, on_delete=models.CASCADE)
-    quantite = models.IntegerField()
+    numero_vente = models.CharField(max_length=100, unique=True, default=uuid.uuid4)
     type_vente = models.CharField(max_length=20, choices=TYPE_VENTE_CHOICES)
-    prix_unitaire = models.IntegerField()
-    total = models.IntegerField()
     date_vente = models.DateTimeField(default=timezone.now)
     vendeur = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
     nom_client = models.CharField(max_length=255, blank=True, null=True)
-    numero_vente = models.CharField(max_length=100, default='DEFAULT_VALUE')
-    
 
-    def save(self, *args, **kwargs):
-        self.total = self.quantite * self.prix_unitaire
-        super().save(*args, **kwargs)
+    def total(self):
+        return sum(ligne.sous_total() for ligne in self.lignes.all())
 
     def __str__(self):
-        return f"Vente de {self.produit.designation} - {self.type_vente} - {self.date_vente.strftime('%Y-%m-%d')}"
+        return f"Vente n°{self.numero_vente} - {self.type_vente} - {self.date_vente.strftime('%Y-%m-%d')}"
 
+class LigneVente(models.Model):
+    vente = models.ForeignKey(Vente, related_name='lignes', on_delete=models.CASCADE)
+    produit = models.ForeignKey(Produit, on_delete=models.CASCADE)
+    quantite = models.IntegerField()
+    prix_unitaire = models.IntegerField()
+
+    def sous_total(self):
+        return self.quantite * self.prix_unitaire
+
+    def __str__(self):
+        return f"{self.quantite} x {self.produit.designation}"
 
 
 class Order(models.Model):
