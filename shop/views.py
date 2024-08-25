@@ -11,7 +11,7 @@ from django.db import transaction
 from django.db.models import F
 import uuid
 from django.utils.text import slugify
-from django.db.models import Sum
+from django.db.models import Sum, FloatField
 from datetime import datetime
 
 
@@ -276,19 +276,27 @@ def voir_facture(request):
     return render(request, 'voir_facture.html', {'vente': vente})
 
 
-
-
 def ventes_du_jour(request):
     today = timezone.localdate()  # Date locale du jour
-    start_of_day = timezone.make_aware(datetime.combine(today, datetime.min.time()))
-    end_of_day = timezone.make_aware(datetime.combine(today, datetime.max.time()))
+    selected_date_str = request.GET.get('date', today.strftime('%Y-%m-%d'))  # Date sélectionnée ou aujourd'hui par défaut
+    
+    try:
+        selected_date = timezone.datetime.strptime(selected_date_str, '%Y-%m-%d').date()
+    except ValueError:
+        selected_date = today  # En cas de date invalide, utiliser la date du jour
+
+    start_of_day = timezone.make_aware(datetime.combine(selected_date, datetime.min.time()))
+    end_of_day = timezone.make_aware(datetime.combine(selected_date, datetime.max.time()))
 
     ventes = Vente.objects.filter(date_vente__range=(start_of_day, end_of_day))
-    total_vendu = ventes.aggregate(total=Sum('total'))['total'] or 0
+    total_vendu = LigneVente.objects.filter(vente__in=ventes).aggregate(
+        total=Sum(F('quantite') * F('prix_unitaire'), output_field=FloatField())
+    )['total'] or 0
 
     context = {
         'ventes': ventes,
         'today': today,
+        'selected_date': selected_date,
         'total_vendu': total_vendu,
     }
     return render(request, 'ventes_du_jour.html', context)

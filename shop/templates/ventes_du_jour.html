@@ -4,7 +4,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Ventes du Jour</title>
+    <title>Ventes</title>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
@@ -14,8 +14,16 @@
     {% include 'admin_dash.html' %}
 
     <div class="ml-80 container mx-auto mb-80 w-3/4">
-        <h1 class="text-2xl font-bold mb-4"><i class="fa-solid fa-cash-register"></i>  Ventes du {{ today|date:"d/m/Y" }}</h1>
-        <table class="min-w-full bg-white border border-gray-200">
+        <h1 class="text-2xl font-bold mb-4"><i class="fa-solid fa-cash-register"></i>  Ventes du {{ selected_date|date:"d/m/Y" }}</h1>
+
+        <!-- Formulaire pour sélectionner une date -->
+        <form method="get" class="mb-6">
+            <label for="date" class="block text-gray-700 text-sm font-bold mb-2">Sélectionner une date :</label>
+            <input type="date" id="date" name="date" value="{{ selected_date|date:'Y-m-d' }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            <button type="submit" class="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Afficher</button>
+        </form>
+
+        <table id="ventes-table" class="min-w-full bg-white border border-gray-200">
             <thead>
                 <tr class="bg-gray-100 border-b">
                     <th class="py-2 px-4 text-left">Produit</th>
@@ -28,29 +36,31 @@
             </thead>
             <tbody>
                 {% for vente in ventes %}
+                    {% for ligne in vente.lignes.all %}
                     <tr>
-                        <td class="border px-4 py-2">{{ vente.produit.designation }}</td>
-                        <td class="border px-4 py-2">{{ vente.quantite }}</td>
-                        <td class="border px-4 py-2">{{ vente.prix_unitaire }} $</td>
-                        <td class="border px-4 py-2">{{ vente.total }} $</td>
+                        <td class="border px-4 py-2">{{ ligne.produit.designation }}</td>
+                        <td class="border px-4 py-2">{{ ligne.quantite }}</td>
+                        <td class="border px-4 py-2">{{ ligne.prix_unitaire }} $</td>
+                        <td class="border px-4 py-2">{{ ligne.sous_total }} $</td>
                         <td class="border px-4 py-2">{{ vente.nom_client }}</td>
                         <td class="border px-4 py-2">{{ vente.date_vente|date:"d/m/Y H:i" }}</td>
                     </tr>
+                    {% endfor %}
                 {% empty %}
                     <tr>
-                        <td colspan="6" class="text-center py-4">Aucune vente enregistrée aujourd'hui.</td>
+                        <td colspan="6" class="text-center py-4">Aucune vente enregistrée pour cette date.</td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
         <div class="mt-4">
-            <p class="font-bold">Total vendu aujourd'hui : {{ total_vendu }} $</p>
+            <p class="font-bold">Total vendu : {{ total_vendu }} $</p>
         </div>
     </div>
 
     <script>
         $(document).ready(function() {
-            $('table').DataTable({
+            $('#ventes-table').DataTable({
                 "dom": '<"flex justify-between items-center"<"length-menu"l><"filter-input"f>>rt<"flex justify-between items-center"<"info-text"i><"pagination"p>>',
                 "language": {
                     "lengthMenu": "Afficher _MENU_ entrées",
